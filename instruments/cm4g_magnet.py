@@ -1,6 +1,6 @@
 import re
 from softioc import builder
-from .telnet_base import TelnetDevice, TelnetConnection
+from ..telnet_base import TelnetDevice, TelnetConnection
 
 
 class Device(TelnetDevice):

@@ -1,7 +1,7 @@
 import re
 import time
 from softioc import builder, alarm
-from .telnet_base import TelnetDevice, TelnetConnection
+from ..telnet_base import TelnetDevice, TelnetConnection
 
 
 class Device(TelnetDevice):

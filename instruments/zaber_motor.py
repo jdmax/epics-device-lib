@@ -1,65 +1,47 @@
-import asyncio
 from zaber_motion import Units
 from zaber_motion.ascii import Connection
-from softioc import builder, alarm
+from softioc import builder
 from time import sleep
+from ..base_device import BaseDevice
 
 
-class Device():
-    """Makes library of PVs needed for Zaber Motor Controller and provides methods connect them to the device
+class Device(BaseDevice):
+    """Zaber Motor Controller"""
 
-    Attributes:
-        pvs: dict of Process Variables keyed by name
-        channels: channels of device
-    """
-
-    def __init__(self, device_name, settings):
-        '''Make PVs needed for this device and put in pvs dict keyed by name
-        '''
-        self.device_name = device_name
-        self.settings = settings
-        self.channels = settings['channels']
-        self.pvs = {}
-        sevr = {'HHSV': 'MAJOR', 'HSV': 'MINOR', 'LSV': 'MINOR', 'LLSV': 'MAJOR', 'DISP': '0'}
-
-        for channel in settings['channels']:  # set up PVs for each channel, calibrations are values of dict
-            if "None" in channel: continue
-            self.pvs[channel+"_MI"] = builder.aIn(channel+"_MI", **sevr)
-            self.pvs[channel+"_MC"] = builder.aOut(channel+"_MC", on_update_name=self.do_sets, **sevr)
+    def _create_pvs(self):
+        for channel in self._skip_none_channels():
+            self.pvs[channel+"_MI"] = builder.aIn(channel+"_MI", **self.sevr)
+            self.pvs[channel+"_MC"] = builder.aOut(channel+"_MC", on_update_name=self.do_sets, **self.sevr)
             self.pvs[channel+"_home"] = builder.boolOut(channel+"_home", on_update_name=self.do_sets)
             self.pvs[channel+"_away"] = builder.boolOut(channel+"_away", on_update_name=self.do_sets)
             self.pvs[channel+"_stop"] = builder.boolOut(channel+"_stop", on_update_name=self.do_sets)
             self.pvs[channel+"_zero"] = builder.boolOut(channel+"_zero", on_update_name=self.do_sets)
 
-    # Helper variables: mmbout to set positions
         for channel, locs in self.settings['locations'].items():
-            list = []
+            names = []
             for i, loc in enumerate(locs):
                 name, pos = loc
-                list.append(name)
+                names.append(name)
                 self.pvs[channel+"_pos_"+str(i)] = builder.aOut(channel+"_pos_"+str(i))
                 self.pvs[channel+"_pos_"+str(i)].set(pos)
             self.pvs[channel+"_locations"] = (
-                builder.mbbOut(channel+"_locations", *list, on_update_name=self.set_position))
+                builder.mbbOut(channel+"_locations", *names, on_update_name=self.set_position))
+
+    def _create_connection(self):
+        return DeviceConnection(self.settings['ip'], self.settings['port'], self.settings['timeout'])
+
+    def _post_connect(self):
+        self.read_outs()
 
     def set_position(self, new_value, pv):
-        pv_name = pv.replace(self.device_name + ':', '')  # remove device name from PV to get bare pv_name
+        pv_name = pv.replace(self.device_name + ':', '')
         channel = pv_name.replace("_locations", '')
         chan = self.channels.index(channel)
         if self.settings['check_home'][channel]:
             self.pvs[channel + "_MI"].set(self.t.home(chan))
         self.pvs[channel+"_MC"].set(int(self.pvs[channel+"_pos_"+str(new_value)].get()))
-        # set motor to value in position in corresponding PV
 
-    async def connect(self):
-        '''Open connection to device'''
-        try:
-            self.t = DeviceConnection(self.settings['ip'], self.settings['port'], self.settings['timeout'])
-            await self.read_outs()
-        except Exception as e:
-            print(f"Failed connection on {self.settings['ip']}, {e}")
-
-    async def read_outs(self):
+    def read_outs(self):
         """Read and set OUT PVs at the start of the IOC"""
         for i, channel in enumerate(self.channels):
             if "None" in channel: continue
@@ -79,24 +61,18 @@ class Device():
                         self.pvs[channel+"_locations"].set(0)
                 except KeyError:
                     self.pvs[channel+"_locations"].set(0)
-
             except OSError as e:
                 print("Error initializing outs.", e)
-                await self.reconnect()
+                self.reconnect()
 
-    async def reconnect(self):
-        del self.t
-        print("Connection failed. Attempting reconnect.")
-        await self.connect()
-
-    async def do_sets(self, new_value, pv):
+    def do_sets(self, new_value, pv):
         """Set Zaber MCC states"""
-        pv_name = pv.replace(self.device_name + ':', '')  # remove device name from PV to get bare pv_name
-        p = pv_name.split("_")[0]  # pv_name root
+        pv_name = pv.replace(self.device_name + ':', '')
+        p = pv_name.split("_")[0]
         chan = self.channels.index(p)
         try:
-            if '_MC' in pv_name:  # valve controller commands
-                self.pvs[p+"_MI"].set(self.t.move_to(chan, new_value))  # set returned value
+            if '_MC' in pv_name:
+                self.pvs[p+"_MI"].set(self.t.move_to(chan, new_value))
             elif '_home' in pv_name:
                 if new_value:
                     self.pvs[p+"_MI"].set(self.t.home(chan))
@@ -114,11 +90,10 @@ class Device():
                     self.pvs[p+"_zero"].set(self.t.set_zero(chan))
                     self.pvs[p+"_zero"].set(False)
         except OSError:
-            await self.reconnect()
-        return
+            self.reconnect()
 
     async def do_reads(self):
-        '''Match variables to methods in device driver and get reads from device. Set to PVs.'''
+        """Read motor positions and update PVs"""
         try:
             for i, channel in enumerate(self.channels):
                 if "None" in channel: continue
@@ -128,30 +103,15 @@ class Device():
             for i, channel in enumerate(self.channels):
                 if "None" in channel: continue
                 self.set_alarm(channel + '_MI')
-            await self.reconnect()
+            self.reconnect()
         else:
             return True
 
-    def set_alarm(self, channel):
-        """Set alarm and severity for channel"""
-        self.pvs[channel].set_alarm(severity=1, alarm=alarm.READ_ALARM)
-
-    def remove_alarm(self, channel):
-        """Remove alarm and severity for channel"""
-        self.pvs[channel].set_alarm(severity=0, alarm=alarm.NO_ALARM)
-
 
 class DeviceConnection():
-    '''Handle connection to Zaber motor controller for all axes
-    '''
+    """Handle connection to Zaber motor controller for all axes"""
 
     def __init__(self, host, port, timeout):
-        '''Open connection to motor controller
-        Arguments:
-            host: IP address
-            port: Port of device
-            timeout: Telnet timeout in secs
-        '''
         self.host = host
         self.axes = []
 
@@ -164,13 +124,12 @@ class DeviceConnection():
         except Exception as e:
             print(f"Zaber motor connection failed on {self.host}: {e}")
 
-
-    def get_pos(self, axis):   # not async! Wait until not busy, then return position
+    def get_pos(self, axis):
         while self.axes[axis].is_busy():
             sleep(0.2)
         return self.axes[axis].get_position(Units.ANGLE_DEGREES)
 
-    def set_zero(self, axis):   # set this position as encoder zero
+    def set_zero(self, axis):
         while self.axes[axis].is_busy():
             sleep(0.2)
         self.axes[axis].generic_command('set pos 0')

@@ -1,5 +1,5 @@
 import re
-from .telnet_base import TelnetDevice, TelnetConnection
+from ..telnet_base import TelnetDevice, TelnetConnection
 from softioc import builder
 
 

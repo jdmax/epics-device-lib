@@ -1,6 +1,6 @@
 import psutil
 from softioc import builder
-from .base_device import BaseDevice
+from ..base_device import BaseDevice
 
 
 class Device(BaseDevice):

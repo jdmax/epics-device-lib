@@ -1,4 +1,4 @@
-from .modbus_base import ModbusDevice, ModbusConnection
+from ..modbus_base import ModbusDevice, ModbusConnection
 from softioc import builder
 
 
