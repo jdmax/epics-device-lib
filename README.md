@@ -11,6 +11,7 @@ that runs [softioc_toolkit](https://github.com/YOUR_ORG/softioc_toolkit).
 BaseDevice  (base_device.py)
 ├── ModbusDevice  (modbus_base.py)
 │   ├── instruments/dat8017.py   — Datexel DAT8017 ADC (4-20 mA / voltage)
+│   ├── instruments/dat8017_level.py — Datexel DAT8017-I 4-point LN2 level probe (Pt1000 current divider)
 │   ├── instruments/dat8018.py   — Datexel DAT8018 thermocouple reader
 │   ├── instruments/dat8024.py   — Datexel DAT8024 analog output module
 │   └── instruments/dat8130.py   — Datexel DAT8130 relay / DI module
@@ -35,6 +36,7 @@ BaseDevice  (base_device.py)
 | File | Hardware | Protocol | Key PV types |
 |---|---|---|---|
 | `dat8017.py` | Datexel DAT8017 | Modbus TCP | `aIn` (calibrated 4-20 mA / V) |
+| `dat8017_level.py` | Datexel DAT8017-I | Modbus TCP | `boolIn` x4 (wet/dry per point), `aIn` (level %) |
 | `dat8018.py` | Datexel DAT8018 | Modbus TCP | `aIn` (thermocouple °C) |
 | `dat8024.py` | Datexel DAT8024 | Modbus TCP | `aOut` (0–5 V DAC) |
 | `dat8130.py` | Datexel DAT8130 | Modbus TCP | `boolOut` (relay), `boolIn` (DI) |
