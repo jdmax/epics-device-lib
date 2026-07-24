@@ -24,7 +24,7 @@ class Device(ModbusDevice):
     def _create_pvs(self):
         """Create 4 wet/dry binary PVs and one overall percent-full PV"""
         for name in self.level_names:
-            self.pvs[name] = builder.boolIn(name, ZNAM='Dry', ONAM='Wet', **self.sevr)
+            self.pvs[name] = builder.boolIn(name, ZNAM='Dry', ONAM='Wet', DISP=self.sevr['DISP'])
         self.pvs['Level_Percent'] = builder.aIn('Level_Percent', **self.sevr)
 
     async def do_reads(self):
