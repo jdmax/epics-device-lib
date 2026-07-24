@@ -10,8 +10,8 @@ class Device(ModbusDevice):
     current away from the module (lower mA reading), while dry, self-heated
     RTDs rise to ~120+ ohm and force more current through the module's shunt
     (higher mA reading). The RTD loops live on physical channels 0, 2, 4, 6;
-    channels 1, 3, 5, 7 are unused by this wiring. Channel 0 reads the bottom
-    RTD, channel 6 the top.
+    channels 1, 3, 5, 7 are unused by this wiring. Channel 0 reads the top
+    RTD, channel 6 the bottom.
     """
 
     RTD_CHANNEL_INDICES = (0, 2, 4, 6)
@@ -33,7 +33,7 @@ class Device(ModbusDevice):
         try:
             readings = self.t.read_all()
             wet_states = []
-            for name, idx in zip(self.level_names, self.RTD_CHANNEL_INDICES):
+            for name, idx in zip(self.level_names, reversed(self.RTD_CHANNEL_INDICES)):
                 current_ma = readings[idx] / 1000
                 is_wet = current_ma < self.threshold
                 self.pvs[name].set(is_wet)
