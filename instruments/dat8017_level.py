@@ -18,7 +18,7 @@ class Device(ModbusDevice):
 
     def __init__(self, device_name, settings):
         self.threshold = settings.get('threshold', 10.0)  # mA; below = wet, above = dry
-        self.level_names = settings['channels']  # 4 PV names, in probe order (bottom to top)
+        self.level_names = settings['channels']  # 4 PV names, in probe order (top to bottom)
         super().__init__(device_name, settings)
 
     def _create_pvs(self):
@@ -33,21 +33,24 @@ class Device(ModbusDevice):
         try:
             readings = self.t.read_all()
             wet_states = []
-            for name, idx in zip(self.level_names, reversed(self.RTD_CHANNEL_INDICES)):
+            for name, idx in zip(self.level_names, self.RTD_CHANNEL_INDICES):
                 current_ma = readings[idx] / 1000
                 is_wet = current_ma < self.threshold
                 self.pvs[name].set(is_wet)
                 wet_states.append(is_wet)
             self._handle_read_success()
 
-            # Liquid fills from the bottom (index 0) up, so the fill level is the
-            # first dry channel. Any wet channel above that is physically
-            # impossible and means at least one sensor's reading is bad.
-            fill_count = next((i for i, wet in enumerate(wet_states) if not wet), len(wet_states))
-            if any(wet_states[fill_count:]):
+            # wet_states is top-to-bottom (probe order). Liquid fills from the
+            # bottom up, so reverse before scanning: the fill level is the first
+            # dry channel counting up from the bottom. Any wet channel above
+            # that is physically impossible and means at least one sensor's
+            # reading is bad.
+            bottom_to_top = wet_states[::-1]
+            fill_count = next((i for i, wet in enumerate(bottom_to_top) if not wet), len(bottom_to_top))
+            if any(bottom_to_top[fill_count:]):
                 self.pvs['Level_Percent'].set_alarm(severity=2, alarm=alarm.CALC_ALARM)
             else:
-                self.pvs['Level_Percent'].set(100 * fill_count / len(wet_states))
+                self.pvs['Level_Percent'].set(100 * fill_count / len(bottom_to_top))
                 self.remove_alarm('Level_Percent')
             return True
         except (OSError, TypeError, AttributeError) as e:
