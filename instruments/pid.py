@@ -1,29 +1,45 @@
 import asyncio
 import logging
+import time
 from softioc import builder
-from simple_pid import PID
 from ..base_device import BaseDevice
 import aioca
 
 
 class Device(BaseDevice):
-    """PID Controller Device (simple_pid backend)
+    """Self-contained PID Controller Device (no external PID dependency)
 
     Software PID controller that reads a process variable from one PV,
     computes a control output, and writes it to another PV via Channel Access.
 
-    This uses ``simple_pid``, which handles output clamping and integral
-    anti-windup natively via ``output_limits``. Auto/Manual transitions are
-    made bumpless with ``PID.set_auto_mode``.
+    Compared to the simple_pid-backed ``pid_controller`` device, the control
+    law here is implemented in-process (see :class:`PIDCore`) and adds:
+
+      * True elapsed-time (``dt``) integration/derivative, measured with
+        ``time.monotonic`` each cycle rather than assuming a fixed period.
+      * Derivative-on-measurement (no derivative kick on setpoint changes).
+      * Back-calculation integral anti-windup (``kaw``), which bleeds the
+        integral term down smoothly while the output is saturated.
+      * Bumpless Auto/Manual transfer: while in Manual the integrator tracks
+        the manual output, so switching to Auto starts from the same value.
+      * Optional feed-forward, either a constant and/or read from a PV.
+
+    PV layout is identical to ``pid_controller`` so this device is a drop-in
+    replacement -- change only ``module: 'devices.instruments.pid'`` in
+    settings.yaml.
 
     Config (``outs`` block in settings.yaml):
         kp, ki, kd:              PID gains
         setpoint:                initial setpoint
-        min_output, max_output:  output limits (also drive anti-windup)
+        min_output, max_output:  output limits (clamp + anti-windup range)
+        kaw:                     anti-windup back-calculation gain (default 1.0)
+        feedforward:             constant feed-forward added to output (default 0)
         auto_start:              True -> start in Auto, else Manual
-        p_on_measurement:        proportional-on-measurement (default False)
-        d_on_measurement:        derivative-on-measurement (default True,
-                                 avoids derivative kick on setpoint changes)
+
+    Optional top-level keys:
+        input_pv:                PV to read as process value (required to control)
+        output_pv:               PV to write the control output to
+        feedforward_pv:          PV whose value is added as feed-forward
     """
 
     def __init__(self, device_name, settings):
@@ -34,13 +50,16 @@ class Device(BaseDevice):
             'kd': outs.get('kd', 0.0),
             'setpoint': outs.get('setpoint', 0.0),
             'output_limits': (outs.get('min_output', 0.0), outs.get('max_output', 100.0)),
-            'p_on_measurement': outs.get('p_on_measurement', False),
-            'd_on_measurement': outs.get('d_on_measurement', True),
+            'kaw': outs.get('kaw', 1.0),
         }
         self.auto_mode = outs.get('auto_start', False)
+        self.feedforward = outs.get('feedforward', 0.0)
 
         self.input_pv = settings.get('input_pv')
         self.output_pv = settings.get('output_pv')
+        self.feedforward_pv = settings.get('feedforward_pv')
+
+        self._last_time = None  # monotonic timestamp of previous compute
 
         super().__init__(device_name, settings)
 
@@ -87,7 +106,7 @@ class Device(BaseDevice):
                 initial_value=1 if self.auto_mode else 0,
                 on_update_name=self.do_sets
             )
-            # Output limits (feed simple_pid's output_limits / anti-windup)
+            # Output limits (clamp + anti-windup range)
             min_limit, max_limit = self.pid_params['output_limits']
             self.pvs[channel + "_DRVH"] = builder.aOut(
                 channel + "_DRVH",
@@ -101,13 +120,19 @@ class Device(BaseDevice):
             )
 
     def _create_connection(self):
-        """Create PID connection (no physical connection needed)"""
-        return PIDConnection(self.pid_params)
+        """Create the in-process PID controller (no physical connection)"""
+        return PIDCore(
+            self.pid_params['kp'],
+            self.pid_params['ki'],
+            self.pid_params['kd'],
+            setpoint=self.pid_params['setpoint'],
+            output_limits=self.pid_params['output_limits'],
+            kaw=self.pid_params['kaw'],
+        )
 
     def connect(self):
         """Initialize PID controller"""
         super().connect()
-        # Sync the controller with the current PV values
         self._update_pid_params()
 
     def _update_pid_params(self):
@@ -129,27 +154,36 @@ class Device(BaseDevice):
         """Handle PV set operations"""
         pv_name = pv.replace(self.device_name + ':', '')
 
-        # Update controller parameters when any tuning PV changes
         if any(suffix in pv_name for suffix in ["_KP", "_KI", "_KD", "_SP", "_DRVH", "_DRVL"]):
             self._update_pid_params()
+
+    async def _read_feedforward(self):
+        """Return the total feed-forward: constant plus optional PV value."""
+        ff = self.feedforward
+        if self.feedforward_pv:
+            ff += await aioca.caget(self.feedforward_pv, timeout=2)
+        return ff
 
     async def do_reads(self):
         """Read input PV, compute PID output, and write to output PV"""
         try:
+            # Real elapsed time since the previous cycle
+            now = time.monotonic()
+            dt = (now - self._last_time) if self._last_time is not None else 0.0
+            self._last_time = now
+
             for channel in self._skip_none_channels():
                 try:
                     input_value = await aioca.caget(self.input_pv, timeout=2)
                     self.pvs[channel + "_PV"].set(input_value)
 
+                    ff = await self._read_feedforward()
                     mode = self.pvs[channel + "_Mode"].get()
                     if mode == 1:  # Auto mode
-                        # Bumpless transfer: prime the controller with the last
-                        # manual output the first cycle after leaving Manual.
-                        self.t.to_auto(self.pvs[channel + "_MV"].get())
-                        output = self.t.compute(input_value)
-                    else:  # Manual mode
-                        self.t.to_manual()
+                        output = self.t.compute(input_value, dt, feedforward=ff)
+                    else:  # Manual mode -- track so Auto transfer is bumpless
                         output = self.pvs[channel + "_MV"].get()
+                        self.t.track(output, input_value, dt, feedforward=ff)
 
                     self.pvs[channel + "_CV"].set(output)
                     if self.output_pv:
@@ -171,48 +205,88 @@ class Device(BaseDevice):
             return False
 
 
-class PIDConnection:
-    """simple_pid controller wrapper"""
+class PIDCore:
+    """Self-contained positional PID controller.
 
-    def __init__(self, params):
-        self.pid = PID(
-            params['kp'],
-            params['ki'],
-            params['kd'],
-            setpoint=params['setpoint'],
-            output_limits=params['output_limits'],
-            proportional_on_measurement=params['p_on_measurement'],
-            differential_on_measurement=params['d_on_measurement'],
-        )
+    Implements derivative-on-measurement, back-calculation anti-windup, and a
+    tracking mode for bumpless Auto/Manual transfer. All timing is driven by an
+    explicit ``dt`` (seconds) supplied by the caller.
+    """
 
-    def compute(self, input_value):
-        """Compute PID output for the given process value"""
-        return self.pid(input_value)
-
-    def update_params(self, **kwargs):
-        """Update gains, setpoint and output limits"""
-        if 'kp' in kwargs:
-            self.pid.Kp = kwargs['kp']
-        if 'ki' in kwargs:
-            self.pid.Ki = kwargs['ki']
-        if 'kd' in kwargs:
-            self.pid.Kd = kwargs['kd']
-        if 'setpoint' in kwargs:
-            self.pid.setpoint = kwargs['setpoint']
-        if 'output_limits' in kwargs:
-            self.pid.output_limits = kwargs['output_limits']
-
-    def to_manual(self):
-        """Freeze the controller (Manual). No-op if already manual."""
-        if self.pid.auto_mode:
-            self.pid.set_auto_mode(False)
-
-    def to_auto(self, last_output):
-        """Resume auto control, seeding integral so output starts at
-        ``last_output`` (bumpless). No-op if already in auto."""
-        if not self.pid.auto_mode:
-            self.pid.set_auto_mode(True, last_output=last_output)
+    def __init__(self, kp, ki, kd, setpoint=0.0, output_limits=(None, None), kaw=1.0):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.setpoint = setpoint
+        self.lo, self.hi = output_limits
+        self.kaw = kaw
+        self.reset()
 
     def reset(self):
-        """Reset controller internal state"""
-        self.pid.reset()
+        """Clear integrator and derivative/history state."""
+        self._integral = 0.0
+        self._prev_pv = None
+        self._last_output = 0.0
+
+    def update_params(self, **kwargs):
+        """Update gains, setpoint and output limits."""
+        if 'kp' in kwargs:
+            self.kp = kwargs['kp']
+        if 'ki' in kwargs:
+            self.ki = kwargs['ki']
+        if 'kd' in kwargs:
+            self.kd = kwargs['kd']
+        if 'setpoint' in kwargs:
+            self.setpoint = kwargs['setpoint']
+        if 'output_limits' in kwargs:
+            self.lo, self.hi = kwargs['output_limits']
+
+    def _clamp(self, value):
+        if self.lo is not None and value < self.lo:
+            return self.lo
+        if self.hi is not None and value > self.hi:
+            return self.hi
+        return value
+
+    def _derivative(self, pv, dt):
+        """Derivative on measurement; zero on the first sample."""
+        if self._prev_pv is None or dt <= 0:
+            return 0.0
+        return -self.kd * (pv - self._prev_pv) / dt
+
+    def compute(self, pv, dt, feedforward=0.0):
+        """Compute the control output for process value ``pv`` over ``dt`` seconds."""
+        if dt <= 0:
+            # No time has passed; keep the previous output but track pv for
+            # the next derivative estimate.
+            self._prev_pv = pv
+            return self._last_output
+
+        error = self.setpoint - pv
+        d = self._derivative(pv, dt)
+
+        self._integral += self.ki * error * dt
+        output_pre = self.kp * error + self._integral + d + feedforward
+        output = self._clamp(output_pre)
+
+        # Back-calculation anti-windup: unwind the integrator while saturated.
+        if output != output_pre:
+            self._integral += self.kaw * (output - output_pre) * dt
+
+        self._prev_pv = pv
+        self._last_output = output
+        return output
+
+    def track(self, output, pv, dt, feedforward=0.0):
+        """Manual/tracking mode.
+
+        Holds the externally supplied ``output`` and back-computes the
+        integrator so that a subsequent :meth:`compute` starts from the same
+        value (bumpless transfer). Also advances the derivative history.
+        """
+        error = self.setpoint - pv
+        d = self._derivative(pv, dt)
+        # Choose integral so that kp*error + integral + d + ff == output
+        self._integral = output - self.kp * error - d - feedforward
+        self._prev_pv = pv
+        self._last_output = output
