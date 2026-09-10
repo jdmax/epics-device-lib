@@ -27,8 +27,8 @@ class DeviceConnection(TelnetConnection):
         '''Define regex
         '''
         super().__init__(host, port, timeout)
-        self.ack_regex = re.compile(b'\r\n')
-        self.read_regex = re.compile(b'\d,(.+),\d,(.+)\r\n')
+        self.ack_regex = re.compile(rb'\r\n')
+        self.read_regex = re.compile(rb'\d,(.+),\d,(.+)\r\n')
         self.enq = chr(5)
         self.cr = chr(13)
         self.lf = chr(10)

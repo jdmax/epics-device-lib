@@ -76,9 +76,9 @@ class DeviceConnection(TelnetConnection):
 
     def __init__(self, host, port, timeout):
         super().__init__(host, port, timeout)
-        self.read_regex = re.compile(b'TALL\s(\d+.\d{4}),(\d+.\d{4})')
-        self.status_regex = re.compile(b'STA\s(\d+.\d+),(\d+.\d+),(\d),(\d),(\d),(\d),(\d)')
-        self.set_regex = re.compile(b'SET\s(\d+.\d+)')
+        self.read_regex = re.compile(rb'TALL\s(\d+.\d{4}),(\d+.\d{4})')
+        self.status_regex = re.compile(rb'STA\s(\d+.\d+),(\d+.\d+),(\d),(\d),(\d),(\d),(\d)')
+        self.set_regex = re.compile(rb'SET\s(\d+.\d+)')
 
     def read_all(self):
         '''Read temperatures for all channels.'''

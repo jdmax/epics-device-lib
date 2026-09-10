@@ -29,7 +29,7 @@ class DeviceConnection(TelnetConnection):
 
     def __init__(self, host, port, timeout):
         super().__init__(host, port, timeout)
-        self.read_regex = re.compile(b'.+\r\n(-?\d*\.\d)\s')
+        self.read_regex = re.compile(rb'.+\r\n(-?\d*\.\d)\s')
 
     def read_all(self):
         '''Read level.'''

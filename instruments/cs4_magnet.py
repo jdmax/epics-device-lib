@@ -104,15 +104,15 @@ class DeviceConnection(TelnetConnection):
     def __init__(self, host, port, timeout):
         super().__init__(host, port, timeout)
         # Compile regex patterns
-        self.current_regex = re.compile(b'(-?\d+.\d+)\sA')
-        self.voltage_regex = re.compile(b'(-?\d+.\d+)\sV')
-        self.heater_read_regex = re.compile(b'PSHTR\?\r\n(0|1)\r\n')
-        self.sweep_regex = re.compile(b'SWEEP\??\r\n(.+)\r\n')
+        self.current_regex = re.compile(rb'(-?\d+.\d+)\sA')
+        self.voltage_regex = re.compile(rb'(-?\d+.\d+)\sV')
+        self.heater_read_regex = re.compile(rb'PSHTR\?\r\n(0|1)\r\n')
+        self.sweep_regex = re.compile(rb'SWEEP\??\r\n(.+)\r\n')
         self.status_regex = re.compile(
-            b'PSHTR\?;VMAG\?;IMAG\?;IOUT\?;SWEEP\?\r\n(\d);(-?\d+\.\d+) V;(-?\d+\.\d+) A;(-?\d+\.\d+) A;(.*)\r\n')
-        self.ulim_set_regex = re.compile(b'ULIM\s(.*)\r\n')
-        self.llim_set_regex = re.compile(b'LLIM\s(.*)\r\n')
-        self.any_regex = re.compile(b'(.*)\r\n')
+            rb'PSHTR\?;VMAG\?;IMAG\?;IOUT\?;SWEEP\?\r\n(\d);(-?\d+\.\d+) V;(-?\d+\.\d+) A;(-?\d+\.\d+) A;(.*)\r\n')
+        self.ulim_set_regex = re.compile(rb'ULIM\s(.*)\r\n')
+        self.llim_set_regex = re.compile(rb'LLIM\s(.*)\r\n')
+        self.any_regex = re.compile(rb'(.*)\r\n')
 
         self.sweep_choice = ['UP', 'DOWN', 'PAUSE', 'ZERO', 'UP FAST', 'DOWN FAST', 'ZERO FAST']
 
@@ -227,7 +227,7 @@ class DeviceConnection(TelnetConnection):
         state = 'on' if value else 'off'
         try:
             self.tn.write(bytes(f"PSHTR {state}\n", 'ascii'))
-            i, match, data = self.tn.expect([re.compile(b'PSHTR.*\r\n')], timeout=self.timeout)
+            i, match, data = self.tn.expect([re.compile(rb'PSHTR.*\r\n')], timeout=self.timeout)
             # Read back to confirm
             self.tn.write(bytes("PSHTR?\n", 'ascii'))
             i, match, data = self.tn.expect([self.heater_read_regex], timeout=self.timeout)

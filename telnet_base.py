@@ -1,5 +1,5 @@
-import telnetlib
 from .base_device import BaseDevice
+from .telnet_socket import TelnetSocket
 
 
 class TelnetDevice(BaseDevice):
@@ -33,6 +33,6 @@ class TelnetConnection:
         self.timeout = timeout
 
         try:
-            self.tn = telnetlib.Telnet(self.host, port=self.port, timeout=self.timeout)
+            self.tn = TelnetSocket(self.host, port=self.port, timeout=self.timeout)
         except Exception as e:
             print(f"Telnet connection failed on {self.host}: {e}")
