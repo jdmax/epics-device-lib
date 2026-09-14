@@ -65,6 +65,12 @@ class Device(TelnetDevice):
 
         Without this the setpoints would come up at zero and the first operator
         touch of any one of them would yank the others to zero with it.
+
+        Never reconnects on failure. BaseDevice._post_connect calls this from
+        inside connect(), so a reconnect() here would recurse until the stack
+        ran out -- and because DeviceIOC builds the device before iocInit, the
+        IOC would hang at startup serving no PVs at all. The regular poll loop
+        reconnects soon enough.
         """
         channel = self._skip_none_channels()[0]
         try:
@@ -76,8 +82,9 @@ class Device(TelnetDevice):
         except DeviceRefused as e:
             logging.error("Vaunix LMS refused the startup read: %s", e)
         except OSError:
-            logging.error("Vaunix LMS read out error on %s", self.settings['ip'])
-            self.reconnect()
+            logging.error("Vaunix LMS read out error on %s -- the shim may not be "
+                          "listening yet; the poll loop will retry",
+                          self.settings['ip'])
 
     def do_sets(self, new_value, pv):
         """Push a control PV to the device and set the readback from its reply."""
@@ -157,6 +164,10 @@ class DeviceConnection(TelnetConnection):
     """
 
     def _command(self, command):
+        # TelnetConnection swallows a failed connect and leaves .tn unset, so
+        # check before use rather than reporting a puzzling AttributeError.
+        if getattr(self, 'tn', None) is None:
+            raise OSError(f'Vaunix LMS not connected to {self.host}:{self.port}')
         try:
             self.tn.write(bytes(command + '\n', 'ascii'))
             data = self.tn.read_until(b'\n', timeout=self.timeout).decode('ascii')

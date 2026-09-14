@@ -49,6 +49,9 @@ class TelnetSocket:
         self.eof = False
         self.buf = b''      # data ready for the caller
         self._raw = b''     # bytes received but not yet scanned for IAC
+        # Bound before connecting so __del__ has something to look at if
+        # create_connection raises -- e.g. the far end is not listening yet.
+        self.sock = None
         self.sock = socket.create_connection((host, self.port), timeout)
 
     # ------------------------------------------------------------------ write
