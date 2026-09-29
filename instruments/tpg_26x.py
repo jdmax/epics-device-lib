@@ -47,3 +47,4 @@ class DeviceConnection(TelnetConnection):
 
         except Exception as e:
             print(f"TPG26x read failed on {self.host}: {e}")
+            raise OSError('TPG26x read')
