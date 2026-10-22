@@ -1,0 +1,31 @@
+# Example settings for instruments/dat8130.py
+# Datexel DAT8130 relay output / digital input module, Modbus TCP.
+#
+# PVs: one per channel, named exactly as listed.
+# Positions 1-4 are relay outputs 0-3 (boolOut); positions 5-9 are digital inputs 0-4 (boolIn).
+# Use 'None' to skip a position.
+dat8130:
+  module: 'devices.instruments.dat8130'
+  autostart: True
+  ip: '192.0.2.22'
+  port: '502'
+  timeout: 2
+  delay: 2
+  channels:
+    - Valve1_Relay      # relay 0
+    - Valve2_Relay      # relay 1
+    - None              # relay 2
+    - None              # relay 3
+    - Door_Interlock    # digital input 0
+    - None              # digital input 1
+  records:
+    Valve1_Relay:
+      DESC: 'Valve 1 Relay'
+      ZNAM: 'Closed'
+      ONAM: 'Open'
+    Valve2_Relay:
+      DESC: 'Valve 2 Relay'
+      ZNAM: 'Closed'
+      ONAM: 'Open'
+    Door_Interlock:
+      DESC: 'Door Interlock'

@@ -1,0 +1,55 @@
+# Example settings for instruments/cm4g_magnet.py
+# Cryomagnetics Model 4G superconducting magnet power supply, via serial-to-Ethernet adapter.
+# The driver puts the supply in remote mode on connect.
+#
+# PVs per channel: {ch}_VI lead voltage, {ch}_Coil_CI coil current, {ch}_Lead_CI lead current,
+#                  {ch}_ULIM / {ch}_LLIM current limits (outputs),
+#                  {ch}_Sweep mode (UP, DOWN, PAUSE, ZERO, UP FAST, DOWN FAST, ZERO FAST),
+#                  {ch}_Heater persistent switch heater (bool output)
+# Channel name must not contain '_': the driver finds the channel by splitting the PV name on '_'.
+cm4g_magnet:
+  module: 'devices.instruments.cm4g_magnet'
+  autostart: True
+  ip: '192.0.2.13'
+  port: '4444'
+  timeout: 2
+  delay: 2
+  channels:             # Single entry, used as the PV name prefix
+    - Magnet
+  records:
+    Magnet_VI:
+      DESC: 'Magnet Lead Voltage'
+      PREC: 3
+      EGU: 'V'
+      HIHI: 10
+      HIGH: 8
+      LOW: -8
+      LOLO: -10
+    Magnet_Coil_CI:
+      DESC: 'Magnet Coil Current'
+      PREC: 3
+      EGU: 'A'
+      HIHI: 85
+      HIGH: 83
+      LOW: -1
+      LOLO: -2
+    Magnet_Lead_CI:
+      DESC: 'Magnet Lead Current'
+      PREC: 3
+      EGU: 'A'
+      HIHI: 85
+      HIGH: 83
+      LOW: -1
+      LOLO: -2
+    Magnet_ULIM:
+      DESC: 'Magnet Upper Current Limit'
+      PREC: 3
+      EGU: 'A'
+    Magnet_LLIM:
+      DESC: 'Magnet Lower Current Limit'
+      PREC: 3
+      EGU: 'A'
+    Magnet_Sweep:
+      DESC: 'Magnet Sweep Mode'
+    Magnet_Heater:
+      DESC: 'Persistent Switch Heater'

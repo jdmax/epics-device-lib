@@ -1,0 +1,37 @@
+# Example settings for instruments/feedforward.py
+# Software feed-forward: reads source PVs over Channel Access, transforms and sums them,
+# and publishes the result. No hardware. Usually paired with a pid.py IOC whose
+# feedforward_pv points at {ch}_CV (see pid.yaml).
+#
+#   CV = clamp( Scale * sum(transform_i(source_i)) + Bias, min_output, max_output )
+#
+# PVs per channel: {ch}_CV output, {ch}_Scale / {ch}_Bias (outputs), {ch}_Enable (Off forces 0),
+#                  {ch}_In{i} / {ch}_FF{i} raw value and contribution of source i (from 0)
+# Source PVs are full names, including the other IOC's prefix.
+ff_heater:
+  module: 'devices.instruments.feedforward'
+  autostart: True
+  delay: 1
+  egu: '%'              # Units for the {ch}_CV PV (default '')
+  prec: 3               # Display precision for {ch}_CV (default 3)
+  #output_pv: 'PREFIX:Some_Actuator'   # Optional: also caput the result here (standalone use)
+  sources:
+    - pv: 'PREFIX:PID_Temp_SP'
+      type: 'poly'      # y = c0 + c1*x + c2*x^2 ... (coeffs ascending)
+      coeffs: [0.0, 0.5, 0.01]
+      desc: 'setpoint feed-forward'
+    - pv: 'PREFIX:OVC_TI'
+      type: 'lookup'    # piecewise-linear over [x, y] breakpoints, clamped at the ends
+      table: [[4.0, 10.0], [10.0, 25.0], [20.0, 60.0]]
+    - pv: 'PREFIX:Some_Flow'
+      type: 'linear'    # y = gain*x + offset (defaults 1 and 0)
+      gain: 2.0
+      offset: 1.0
+  outs:
+    scale: 1.0          # Multiplier on the summed sources (default 1)
+    bias: 0.0           # Added after scaling (default 0)
+    min_output: 0       # Output clamp low (omit for none)
+    max_output: 100     # Output clamp high (omit for none)
+    enable: True        # Start enabled (default True)
+  channels:             # Single entry, used as the PV name prefix
+    - FF_Heater

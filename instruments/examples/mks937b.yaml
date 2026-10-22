@@ -1,0 +1,26 @@
+# Example settings for instruments/mks937b.py
+# MKS 937B vacuum gauge controller, RS-485 via serial-to-Ethernet adapter.
+#
+# PVs: one aIn per channel, named exactly as listed (pressure in the controller's units).
+# Channels map to gauge channels 1-6 in order; use 'None' to skip one.
+mks937b:
+  module: 'devices.instruments.mks937b'
+  autostart: True
+  ip: '192.0.2.30'
+  port: '1001'
+  address: '003'        # Serial address set on the controller, must be 3 digits
+  timeout: 2
+  delay: 2
+  channels:
+    - OVC_CC_PI         # cold cathode
+    - None
+    - OVC_Pirani_PI
+  records:
+    OVC_CC_PI:
+      DESC: 'OVC Cold Cathode Pressure'
+      PREC: 2
+      EGU: 'Torr'
+    OVC_Pirani_PI:
+      DESC: 'OVC Pirani Pressure'
+      PREC: 2
+      EGU: 'Torr'

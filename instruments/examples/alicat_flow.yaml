@@ -1,0 +1,35 @@
+# Example settings for instruments/alicat_flow.py
+# Alicat MCW mass flow controller over Ethernet, via the 'alicat' Python package.
+#
+# PVs per channel: {ch}_FI mass flow, {ch}_PI pressure, {ch}_TI temperature (C),
+#                  {ch}_CI control point readback, {ch}_SP setpoint (output)
+# Units of flow and pressure are whatever the controller is configured for.
+alicat:
+  module: 'devices.instruments.alicat_flow'
+  autostart: True
+  ip: '192.0.2.10'
+  port: '44818'
+  timeout: 2
+  delay: 2
+  gas_type: 'He'        # Gas sent to the controller on connect: 'N2', 'He', ... or number from the manual
+  channels:             # Single entry, used as the PV name prefix
+    - Outflow
+  records:
+    Outflow_FI:
+      DESC: 'Alicat Mass Flow'
+      PREC: 3
+      EGU: 'SLPM'
+    Outflow_PI:
+      DESC: 'Alicat Pressure'
+      PREC: 2
+      EGU: 'psia'
+    Outflow_TI:
+      DESC: 'Alicat Gas Temperature'
+      PREC: 1
+      EGU: 'C'
+    Outflow_SP:
+      DESC: 'Alicat Flow Setpoint'
+      PREC: 3
+      EGU: 'SLPM'
+      DRVH: 10
+      DRVL: 0

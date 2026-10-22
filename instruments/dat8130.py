@@ -21,7 +21,7 @@ class Device(ModbusDevice):
             if i < 4:  # Digital OUT channels first
                 self.pvs[channel] = builder.boolOut(channel, on_update_name=self.do_sets)
             else:  # Digital IN next
-                self.pvs[channel] = builder.boolIn(channel, **self.sevr)
+                self.pvs[channel] = builder.boolIn(channel, DISP=self.sevr['DISP'])
 
     def _post_connect(self):
         """After connection, read initial output values"""

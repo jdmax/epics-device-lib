@@ -1,0 +1,31 @@
+# Example settings for instruments/zaber_motor.py
+# Zaber ASCII motor controller over TCP, via the zaber-motion package. The connection uses
+# Zaber's chain port, so 'port' is read but not used.
+#
+# Channels map to controller axes 1, 2, ... in order; use 'None' to skip an axis.
+# PVs per channel: {ch}_MI position (deg), {ch}_MC move-to (deg), {ch}_home / {ch}_away /
+#                  {ch}_stop / {ch}_zero (bool commands)
+# Per entry in 'locations': {ch}_locations (mbbOut of the names) and {ch}_pos_{i} positions.
+# Channel names must not contain '_': the driver finds the channel by splitting the PV name on '_'.
+zaber:
+  module: 'devices.instruments.zaber_motor'
+  autostart: True
+  ip: '192.0.2.34'
+  port: '55550'
+  timeout: 2
+  delay: 2
+  channels:
+    - Polarizer
+    - Waveplate
+  locations:            # Named presets per channel: [name, position in degrees]
+    Polarizer:
+      - ['Unset', 0]    # index 0: shown when the axis is at none of the presets
+      - ['Parallel', 0]
+      - ['Crossed', 90]
+    Waveplate:
+      - ['Unset', 0]
+      - ['Plus', 45]
+      - ['Minus', 135]
+  check_home:           # Per channel: home the axis before moving to a preset location
+    Polarizer: False
+    Waveplate: True

@@ -1,0 +1,23 @@
+# Example settings for instruments/dat8017_level.py
+# 4-point cryogenic LN2 level probe (Pt1000 RTDs as current dividers), read by a Datexel DAT8017-I.
+#
+# PVs: one boolIn per channel (Dry/Wet), named exactly as listed, plus Level_Percent (aIn, %).
+# Exactly 4 channels, in probe order top to bottom; they map to physical inputs 0, 2, 4, 6.
+ln2_level_probe:
+  module: 'devices.instruments.dat8017_level'
+  autostart: True
+  ip: '192.0.2.19'
+  port: '502'
+  timeout: 2
+  delay: 5
+  threshold: 10.0       # mA; below = wet (immersed), above = dry (vapor) (default 10.0)
+  channels:
+    - LN2_Top
+    - LN2_MidTop
+    - LN2_MidBot
+    - LN2_Bot
+  records:
+    Level_Percent:
+      DESC: 'LN2 Probe Level'
+      PREC: 0
+      EGU: '%'

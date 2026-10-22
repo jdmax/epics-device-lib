@@ -1,0 +1,36 @@
+# Example settings for instruments/si9700.py
+# Scientific Instruments 9700 temperature controller, RS-232 via serial-to-Ethernet adapter.
+#
+# Channels map to sensor inputs A and B in order. Each listed channel gets
+# {ch}_TI, {ch}_Heater (%), {ch}_SP and {ch}_Mode (STOP, NORMAL, PROGRAM, AUTO_TUNE, FIXED);
+# the controller has a single loop, so normally list one channel and 'None'.
+# Channel name must not contain '_': the driver finds the channel by splitting the PV name on '_'.
+si9700:
+  module: 'devices.instruments.si9700'
+  autostart: True
+  ip: '192.0.2.31'
+  port: '1003'
+  timeout: 2
+  delay: 5
+  channels:
+    - Liquifier
+    - None
+  records:
+    Liquifier_TI:
+      DESC: 'Liquifier Temperature'
+      PREC: 4
+      EGU: 'K'
+      HIHI: 310
+      HIGH: 300
+      LOW: 2
+      LOLO: 1
+    Liquifier_Heater:
+      DESC: 'Liquifier Heater Output'
+      PREC: 1
+      EGU: '%'
+    Liquifier_SP:
+      DESC: 'Liquifier Setpoint'
+      PREC: 3
+      EGU: 'K'
+    Liquifier_Mode:
+      DESC: 'Liquifier Heater Mode'

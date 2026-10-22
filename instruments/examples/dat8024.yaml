@@ -1,0 +1,30 @@
+# Example settings for instruments/dat8024.py
+# Datexel DAT8024 4-channel analog output module (0-5 V), Modbus TCP.
+#
+# PVs: one aOut per channel, named exactly as listed (volts).
+# Channels map to outputs 0-3 in order; use 'None' to skip an output.
+dat8024:
+  module: 'devices.instruments.dat8024'
+  autostart: True
+  ip: '192.0.2.21'
+  port: '502'
+  timeout: 2
+  delay: 5
+  channels:
+    - WaveTune_VC
+    - PumpCurrent_VC
+    - None
+    - None
+  records:
+    WaveTune_VC:
+      DESC: 'Wavelength Tune Voltage'
+      PREC: 3
+      EGU: 'V'
+      DRVH: 5
+      DRVL: 0
+    PumpCurrent_VC:
+      DESC: 'Pump Laser Current Control'
+      PREC: 3
+      EGU: 'V'
+      DRVH: 5
+      DRVL: 0

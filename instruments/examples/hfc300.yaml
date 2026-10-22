@@ -1,0 +1,47 @@
+# Example settings for instruments/hfc300.py
+# HFC300 mass flow controller, RS-232 via serial-to-Ethernet adapter.
+#
+# PVs per channel: {ch}_FI flow, {ch}_TI temperature (C), {ch}_SS system state
+#                  (1 Init, 4 Normal, 6 Failure, 8 Calibration), {ch}_SP_IMP implemented setpoint,
+#                  {ch}_VP valve position (string), {ch}_SP flow setpoint (output),
+#                  {ch}_MODE (Default, Auto, Hold, Shut, Purge, Variable, Error),
+#                  {ch}_VP_MAN manual valve drive (output)
+hfc300:
+  module: 'devices.instruments.hfc300'
+  autostart: True
+  ip: '192.0.2.26'
+  port: '1002'
+  timeout: 2
+  delay: 2
+  channels:             # Single entry, used as the PV name prefix
+    - HFC1
+  records:
+    HFC1_FI:
+      DESC: 'HFC300 Flow'
+      PREC: 3
+      EGU: 'SLM'
+      HIHI: 110
+      HIGH: 105
+      LOW: -1
+      LOLO: -2
+    HFC1_TI:
+      DESC: 'HFC300 Temperature'
+      PREC: 1
+      EGU: 'C'
+    HFC1_SS:
+      DESC: 'HFC300 System State'
+      PREC: 0
+    HFC1_SP_IMP:
+      DESC: 'HFC300 Implemented Setpoint'
+      PREC: 3
+      EGU: 'SLM'
+    HFC1_VP:
+      DESC: 'HFC300 Valve Position'
+    HFC1_SP:
+      DESC: 'HFC300 Flow Setpoint'
+      PREC: 3
+      EGU: 'SLM'
+      DRVH: 100
+      DRVL: 0
+    HFC1_MODE:
+      DESC: 'HFC300 Mode'

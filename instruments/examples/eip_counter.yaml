@@ -1,0 +1,27 @@
+# Example settings for instruments/eip_counter.py
+# EIP 588C microwave frequency counter on GPIB, via a Prologix GPIB-Ethernet controller.
+#
+# PVs: one aIn per channel, named exactly as listed (frequency in GHz).
+eip_counter:
+  module: 'devices.instruments.eip_counter'
+  autostart: True
+  ip: '192.0.2.24'      # Prologix controller
+  port: '1234'
+  timeout: 4
+  delay: 0.4
+  addr: 19              # GPIB address of the counter
+  band: 3               # Counter band
+  subband: 8            # Counter sub-band
+  cent_freq: 136.6      # Expected center frequency in GHz
+  rate: 500             # Sample rate in ms
+  channels:
+    - uWave_FI
+  records:
+    uWave_FI:
+      DESC: 'Microwave Frequency'
+      PREC: 6
+      EGU: 'GHz'
+      HIHI: 140
+      HIGH: 138
+      LOW: 135
+      LOLO: 134

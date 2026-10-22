@@ -1,0 +1,22 @@
+# Example settings for instruments/lm500.py
+# American Magnetics LM-500 liquid level monitor, RS-232 via serial-to-Ethernet adapter.
+#
+# PVs: one aIn per channel, named exactly as listed (level in cm).
+lm500:
+  module: 'devices.instruments.lm500'
+  autostart: True
+  ip: '192.0.2.27'
+  port: '1003'
+  timeout: 2
+  delay: 10
+  channels:
+    - Magnet_LI
+  records:
+    Magnet_LI:
+      DESC: 'Magnet Level Probe Reading'
+      PREC: 2
+      EGU: 'cm'
+      HIHI: 65
+      HIGH: 64
+      LOW: 40
+      LOLO: 36

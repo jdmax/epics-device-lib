@@ -1,0 +1,40 @@
+# Example settings for instruments/bga244.py
+# SRS BGA244 binary gas analyzer, RS-232 via serial-to-Ethernet adapter.
+#
+# PVs per channel: {ch}_RI1 primary gas ratio, {ch}_RI2 secondary gas ratio,
+#                  {ch}_TI gas temperature, {ch}_PI pressure,
+#                  {ch}_NSOS normalized speed of sound, {ch}_BTI block temperature
+bga244:
+  module: 'devices.instruments.bga244'
+  autostart: True
+  ip: '192.0.2.12'
+  port: '4001'
+  timeout: 5
+  delay: 2
+  channels:             # Single entry, used as the PV name prefix
+    - BGA
+  records:
+    BGA_RI1:
+      DESC: 'Primary Gas Ratio'
+      PREC: 4
+      EGU: '%'
+    BGA_RI2:
+      DESC: 'Secondary Gas Ratio'
+      PREC: 4
+      EGU: '%'
+    BGA_TI:
+      DESC: 'Gas Temperature'
+      PREC: 2
+      EGU: 'C'
+    BGA_PI:
+      DESC: 'Analysis Pressure'
+      PREC: 3
+      EGU: 'psi'
+    BGA_NSOS:
+      DESC: 'Normalized Speed of Sound'
+      PREC: 2
+      EGU: 'm/s'
+    BGA_BTI:
+      DESC: 'Block Temperature'
+      PREC: 2
+      EGU: 'C'

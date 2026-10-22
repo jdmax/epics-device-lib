@@ -1,0 +1,44 @@
+# Example settings for instruments/ls336.py
+# Lakeshore Model 336 temperature controller, via serial-to-Ethernet adapter.
+#
+# Channels map to inputs A-D in order, and the Nth channel also drives control output N.
+#   Name ending in '_TI': temperature readback only, one aIn with that exact name.
+#   Any other name: a control loop with PVs {ch}_TI, {ch}_Heater (%), {ch}_SP, {ch}_Manual,
+#     {ch}_kP / {ch}_kI / {ch}_kD, {ch}_Mode (Off, Closed Loop, Zone, Open Loop),
+#     {ch}_Range (Off, Low, Med, High). Use loops only on the first two channels (heater outputs 1 and 2).
+#     Loop names must not contain '_': the driver finds the channel by splitting the PV name on '_'.
+lakeshore_336:
+  module: 'devices.instruments.ls336'
+  autostart: True
+  ip: '192.0.2.29'
+  port: '1001'
+  timeout: 2
+  delay: 5
+  channels:
+    - Cell              # input A, heater output 1
+    - None              # input B unused
+    - Coldhead_TI       # input C, readback only
+    - None              # input D unused
+  records:
+    Cell_TI:
+      DESC: 'Cell Temperature'
+      PREC: 3
+      EGU: 'K'
+      HIHI: 310
+      HIGH: 300
+      LOW: 2
+      LOLO: 1
+    Cell_Heater:
+      DESC: 'Cell Heater Output'
+      PREC: 1
+      EGU: '%'
+    Cell_SP:
+      DESC: 'Cell Temperature Setpoint'
+      PREC: 3
+      EGU: 'K'
+      DRVH: 300
+      DRVL: 0
+    Coldhead_TI:
+      DESC: 'Coldhead Temperature'
+      PREC: 3
+      EGU: 'K'

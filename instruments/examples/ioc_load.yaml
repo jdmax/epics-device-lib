@@ -1,0 +1,10 @@
+# Example settings for instruments/ioc_load.py
+# Total CPU and memory of all running master_ioc.py processes on this host. No hardware.
+#
+# PVs (fixed names): TOTAL_IOC_CPU (%), TOTAL_IOC_MEM (MB), IOC_COUNT
+ioc_load:
+  module: 'devices.instruments.ioc_load'
+  autostart: True
+  timeout: 2
+  delay: 2
+  channels: []          # Required key, but unused

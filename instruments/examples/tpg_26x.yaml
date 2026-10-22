@@ -1,0 +1,28 @@
+# Example settings for instruments/tpg_26x.py
+# Pfeiffer TPG 261/262 vacuum gauge controller, RS-232 via serial-to-Ethernet adapter.
+#
+# PVs: one aIn per channel, named exactly as listed (pressure in the controller's units).
+# Channels map to gauges 1-2 in order; use 'None' to skip one (or for a single-gauge TPG 261).
+pfeiffer_26x:
+  module: 'devices.instruments.tpg_26x'
+  autostart: True
+  ip: '192.0.2.32'
+  port: '1001'
+  timeout: 2
+  delay: 5
+  channels:
+    - Outlet_PI
+    - OVC_PI
+  records:
+    Outlet_PI:
+      DESC: 'Outlet Pressure'
+      PREC: 2
+      EGU: 'mbar'
+      HIHI: 1300
+      HIGH: 1200
+      LOW: -100
+      LOLO: -150
+    OVC_PI:
+      DESC: 'OVC Pressure'
+      PREC: 2
+      EGU: 'mbar'

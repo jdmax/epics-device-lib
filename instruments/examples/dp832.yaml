@@ -1,0 +1,46 @@
+# Example settings for instruments/dp832.py
+# Rigol DP832 3-channel programmable DC power supply, LXI socket (port 5555).
+#
+# PVs per channel: {ch}_VI / {ch}_CI voltage and current readback,
+#                  {ch}_VC / {ch}_CC voltage and current setpoints (outputs),
+#                  {ch}_Mode output enable (bool output)
+# Channels map to supply outputs 1-3 in order; use 'None' to skip an output.
+# Channel names must not contain '_': the driver finds the channel by splitting the PV name on '_'.
+rigol_dp832:
+  module: 'devices.instruments.dp832'
+  autostart: True
+  ip: '192.0.2.23'
+  port: '5555'
+  timeout: 2
+  delay: 5
+  channels:
+    - ReservoirHeater
+    - ShieldHeater
+    - None
+  records:
+    ReservoirHeater_VI:
+      DESC: 'Reservoir Heater Voltage'
+      PREC: 3
+      EGU: 'V'
+    ReservoirHeater_CI:
+      DESC: 'Reservoir Heater Current'
+      PREC: 3
+      EGU: 'A'
+    ReservoirHeater_VC:
+      DESC: 'Reservoir Heater Voltage Set'
+      PREC: 3
+      EGU: 'V'
+      DRVH: 30
+      DRVL: 0
+    ReservoirHeater_CC:
+      DESC: 'Reservoir Heater Current Set'
+      PREC: 3
+      EGU: 'A'
+      DRVH: 3
+      DRVL: 0
+    ShieldHeater_CC:
+      DESC: 'Shield Heater Current Set'
+      PREC: 3
+      EGU: 'A'
+      DRVH: 3
+      DRVL: 0

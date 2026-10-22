@@ -1,0 +1,86 @@
+# Example settings for instruments/dat8017_azurlight.py
+# Azurlight ALS laser rear-panel DB9 monitor outputs, read by a Datexel DAT8017-V (Modbus TCP).
+#
+# PVs: one aIn per channel, named exactly as listed, plus Laser_On (boolIn, Off/On).
+# Channels map to DAT8017-V inputs 0-7, wired to DB9 pins 1,2,3,4,6,7,8,9 in that order
+# (pin 5 COMMON -> module input common). Keep the order; rename freely.
+# The 3rd channel (Lmon) is compared to on_threshold to set Laser_On. While the laser is off,
+# 'current' and power channels read 0 and 'temp'/'limit' channels go INVALID.
+azurlight_mon:
+  module: 'devices.instruments.dat8017_azurlight'
+  autostart: True
+  ip: '192.0.2.18'
+  port: '502'
+  timeout: 2
+  delay: 2
+  mv_per_count: 1.0     # DAT8017-V register units in mV (default 1.0)
+  on_threshold: 0.5     # V on Lmon; above = laser on (~2.1 V on, <0.2 V off) (default 0.5)
+  channels:
+    - Laser_Amp_I       # pin 1 ImonA
+    - Laser_Power       # pin 2 Pmon
+    - Laser_Amp_ILim    # pin 3 Lmon
+    - Laser_Pump_T      # pin 4 Tact-P
+    - Laser_PreAmp_I    # pin 6 ImonPA
+    - Laser_Pump_TSP    # pin 7 Tset-P
+    - Laser_Head_TSP    # pin 8 Tset-H
+    - Laser_Head_T      # pin 9 Tact-H
+  calibration:          # 'current' V*5 | 'limit' (V-0.13)*5 | 'temp' NTC | number: V*number | [a, b]: V*a+b
+    Laser_Amp_I: current
+    Laser_Power: 5.49   # W/V, from the laser's test report
+    Laser_Amp_ILim: limit
+    Laser_Pump_T: temp
+    Laser_PreAmp_I: current
+    Laser_Pump_TSP: temp
+    Laser_Head_TSP: temp
+    Laser_Head_T: temp
+  records:              # Keep LOW/LOLO below 0 on current/power so laser-off zeros don't alarm
+    Laser_On:
+      DESC: 'Pump Laser On/Off'
+    Laser_Amp_I:
+      DESC: 'Amp Pump Diode Current'
+      PREC: 2
+      EGU: 'A'
+      HIHI: 9.5
+      HIGH: 8.0
+      LOW: -1
+      LOLO: -2
+    Laser_Power:
+      DESC: 'Laser Head Output Power'
+      PREC: 2
+      EGU: 'W'
+      HIHI: 15
+      HIGH: 12
+      LOW: -1
+      LOLO: -2
+    Laser_Amp_ILim:
+      DESC: 'Amp Pump Diode Current Limit'
+      PREC: 2
+      EGU: 'A'
+    Laser_Pump_T:
+      DESC: 'Amp Pump Diode Temperature'
+      PREC: 1
+      EGU: 'C'
+      HIHI: 35
+      HIGH: 32
+      LOW: 20
+      LOLO: 15
+    Laser_PreAmp_I:
+      DESC: 'Pre-Amp Pump Diode Current'
+      PREC: 2
+      EGU: 'A'
+    Laser_Pump_TSP:
+      DESC: 'Amp Pump Diode Temp Setpoint'
+      PREC: 1
+      EGU: 'C'
+    Laser_Head_TSP:
+      DESC: 'Laser Head Temp Setpoint'
+      PREC: 1
+      EGU: 'C'
+    Laser_Head_T:
+      DESC: 'Laser Head Temperature'
+      PREC: 1
+      EGU: 'C'
+      HIHI: 65
+      HIGH: 60
+      LOW: 15
+      LOLO: 10

@@ -1,0 +1,39 @@
+# Example settings for instruments/ls218.py
+# Lakeshore Model 218 8-channel temperature monitor, RS-232 via serial-to-Ethernet adapter
+# (Lakeshore serial: 7 data bits, odd parity, 1 stop bit).
+#
+# PVs: one aIn per channel, named exactly as listed (temperature in K).
+# Channels map to inputs 1-8 in order; use 'None' to skip an input.
+lakeshore_218:
+  module: 'devices.instruments.ls218'
+  autostart: True
+  ip: '192.0.2.28'
+  port: '1002'
+  timeout: 2
+  delay: 10
+  channels:
+    - Reservoir_TI
+    - None
+    - None
+    - None
+    - OVC_TI
+    - Shield_TI
+    - None
+    - None
+  records:
+    Reservoir_TI:
+      DESC: 'Temperature of Magnet Reservoir'
+      PREC: 2
+      EGU: 'K'
+      HIHI: 310
+      HIGH: 300
+      LOW: 2
+      LOLO: 1
+    OVC_TI:
+      DESC: 'Temperature of Magnet OVC'
+      PREC: 2
+      EGU: 'K'
+    Shield_TI:
+      DESC: 'Temperature of Magnet Shield'
+      PREC: 2
+      EGU: 'K'

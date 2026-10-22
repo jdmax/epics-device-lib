@@ -1,0 +1,24 @@
+# Example settings for instruments/elva1_powmeter.py
+# ELVA-1 millimeter-wave power meter, via serial-to-Ethernet adapter.
+#
+# PVs: one aIn per channel, named exactly as listed (power in mW).
+elva1_powmeter:
+  module: 'devices.instruments.elva1_powmeter'
+  autostart: True
+  ip: '192.0.2.25'
+  port: '23'
+  timeout: 2
+  delay: 0.4
+  freq: 140             # Measurement frequency in GHz, sent to the meter
+  averaging: 50         # Points to average, 1-250 (default 50)
+  channels:
+    - uWave_PWR
+  records:
+    uWave_PWR:
+      DESC: 'Microwave Power'
+      PREC: 4
+      EGU: 'mW'
+      HIHI: 1000
+      HIGH: 500
+      LOW: -1
+      LOLO: -2

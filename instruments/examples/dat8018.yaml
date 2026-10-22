@@ -1,0 +1,38 @@
+# Example settings for instruments/dat8018.py
+# Datexel DAT8018 8-channel thermocouple input module, Modbus TCP.
+#
+# PVs: one aIn per channel, named exactly as listed (temperature in C).
+# Channels map to inputs 0-7 in order; use 'None' to skip an input.
+dat8018:
+  module: 'devices.instruments.dat8018'
+  autostart: True
+  ip: '192.0.2.20'
+  port: '502'
+  timeout: 2
+  delay: 5
+  channels:
+    - Oven_TI
+    - Cell_TI
+    - None
+    - None
+    - None
+    - None
+    - None
+    - None
+  records:
+    Oven_TI:
+      DESC: 'Oven Thermocouple'
+      PREC: 2
+      EGU: 'C'
+      HIHI: 200
+      HIGH: 180
+      LOW: 2
+      LOLO: 1
+    Cell_TI:
+      DESC: 'Cell Thermocouple'
+      PREC: 2
+      EGU: 'C'
+      HIHI: 200
+      HIGH: 180
+      LOW: 2
+      LOLO: 1

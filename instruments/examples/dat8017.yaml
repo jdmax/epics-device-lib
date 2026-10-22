@@ -1,0 +1,33 @@
+# Example settings for instruments/dat8017.py
+# Datexel DAT8017 8-channel analog input module (4-20 mA or voltage), Modbus TCP.
+#
+# PVs: one aIn per channel, named exactly as listed.
+# Channels map to inputs 0-7 in order; use 'None' to skip an input.
+# Every listed channel needs an entry in 'calibration'.
+dat8017_i:
+  module: 'devices.instruments.dat8017'
+  autostart: True
+  ip: '192.0.2.17'
+  port: '502'
+  timeout: 2
+  delay: 5
+  channels:
+    - Bottle_PI
+    - None
+    - Loop_CI
+  calibration:          # Integer: full-scale range of a 4-20 mA sensor, value = (mA - 4) * range / 16
+    Bottle_PI: 3000     # Anything else (e.g. 'raw', or 3000.0): raw register value, uA for current inputs
+    Loop_CI: raw
+  records:
+    Bottle_PI:
+      DESC: 'Bottle Pressure'
+      PREC: 1
+      EGU: 'psi'
+      HIHI: 2600
+      HIGH: 2500
+      LOW: 50
+      LOLO: 10
+    Loop_CI:
+      DESC: 'Loop Current'
+      PREC: 0
+      EGU: 'uA'

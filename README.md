@@ -120,6 +120,11 @@ lakeshore_218:
   ...
 ```
 
+Every driver has a ready-to-paste entry in
+[`instruments/examples/<driver>.yaml`](instruments/examples/), with the
+driver-specific keys and `channels` rules commented. See the
+[examples README](instruments/examples/README.md) for the keys all entries share.
+
 Transport bases (if referenced directly) remain at `devices.<base>`:
 
 ```yaml
@@ -139,4 +144,8 @@ module: 'devices.modbus_base'
 5. Pass an explicit `timeout` to every `read_until` and `expect` call — see
    [Telnet transport](#telnet-transport).
 6. Add an entry to the registry table above.
-7. Commit, tag, and update the submodule pin in each deployment repo that needs it.
+7. Add `instruments/examples/<yourdriver>.yaml` with a working settings entry,
+   and run `pytest tests` (needs `softioc`, `PyYAML` and `pytest`). The test
+   fails for a driver without an example, a settings key the driver reads but
+   the example lacks, or a `records` entry for a PV the driver never creates.
+8. Commit, tag, and update the submodule pin in each deployment repo that needs it.

@@ -1,0 +1,28 @@
+# Example settings for instruments/vaunix_lms.py
+# Vaunix Lab Brick LMS/BLX signal generator. The Lab Brick is USB-only; it is reached through
+# the vaunix_shim TCP service running on the host it is plugged into.
+#
+# PVs per channel: {ch}_FI / {ch}_FC synthesiser frequency readback / set (GHz),
+#                  {ch}_OutFI frequency after the multiplier chain (GHz),
+#                  {ch}_PWRI / {ch}_PWRC power readback / set (dBm),
+#                  {ch}_RF RF output on/off, {ch}_Ref internal reference, {ch}_Lock PLL lock
+# Channel name must not contain '_': the driver finds the channel by splitting the PV name on '_'.
+vaunix_lms:
+  module: 'devices.instruments.vaunix_lms'
+  autostart: True
+  ip: '192.0.2.33'      # Host running the shim
+  port: '5000'          # Port the shim listens on
+  timeout: 2
+  delay: 1
+  multiplier: 12        # Multiplier-chain factor for {ch}_OutFI (default 1: no multiplier)
+  channels:             # Single entry, used as the PV name prefix
+    - MW
+  records:
+    MW_OutFI:
+      DESC: 'Microwave Output Frequency'
+      PREC: 6
+      EGU: 'GHz'
+    MW_PWRC:
+      DESC: 'Synthesiser Power Set'
+      PREC: 2
+      EGU: 'dBm'

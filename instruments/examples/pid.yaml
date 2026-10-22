@@ -1,0 +1,35 @@
+# Example settings for instruments/pid.py
+# Self-contained software PID: reads input_pv and writes output_pv over Channel Access. No hardware.
+# Drop-in replacement for pid_controller.py (same PVs), adding measured-dt integration,
+# derivative on measurement, back-calculation anti-windup, bumpless Auto/Manual and feed-forward.
+#
+# PVs per channel: {ch}_SP setpoint, {ch}_KP / {ch}_KI / {ch}_KD gains, {ch}_PV process value,
+#                  {ch}_CV control output, {ch}_MV manual output, {ch}_Mode (Manual/Auto),
+#                  {ch}_DRVH / {ch}_DRVL output limits
+# PV keys are full names, including the other IOC's prefix.
+pid_temp:
+  module: 'devices.instruments.pid'
+  autostart: True
+  delay: 1              # Update period in seconds
+  input_pv: 'PREFIX:Cell_TI'              # Process value to control
+  output_pv: 'PREFIX:Heater_CC'           # Where the control output is written
+  feedforward_pv: 'PREFIX:FF_Heater_CV'   # Optional: added to the output (see feedforward.yaml)
+  outs:
+    kp: 2.0
+    ki: 0.5
+    kd: 0.1
+    setpoint: 4.5       # Initial setpoint
+    min_output: 0       # Output clamp and anti-windup range
+    max_output: 100
+    kaw: 1.0            # Anti-windup back-calculation gain (default 1.0)
+    feedforward: 0.0    # Constant feed-forward added to output (default 0)
+    auto_start: False   # True starts in Auto, otherwise Manual
+  channels:             # Single entry, used as the PV name prefix
+    - PID_Temp
+  records:
+    PID_Temp_SP:
+      DESC: 'Temperature Setpoint'
+      PREC: 3
+      EGU: 'K'
+      DRVH: 300
+      DRVL: 2

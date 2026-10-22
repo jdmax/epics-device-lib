@@ -1,0 +1,23 @@
+# Example settings for instruments/ami136.py
+# American Magnetics Model 136 liquid level monitor, RS-232 via serial-to-Ethernet adapter.
+# The driver puts the unit in PERCENT mode on connect.
+#
+# PVs: one aIn per channel, named exactly as listed (level in %).
+ami136:
+  module: 'devices.instruments.ami136'
+  autostart: True
+  ip: '192.0.2.11'
+  port: '1001'          # serial-to-Ethernet channel 1
+  timeout: 2
+  delay: 10
+  channels:
+    - Reservoir_LI
+  records:
+    Reservoir_LI:
+      DESC: 'Reservoir Liquid Level'
+      PREC: 1
+      EGU: '%'
+      HIHI: 101
+      HIGH: 100
+      LOW: 20
+      LOLO: 10
