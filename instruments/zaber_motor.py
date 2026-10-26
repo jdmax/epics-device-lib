@@ -47,20 +47,20 @@ class Device(BaseDevice):
             if "None" in channel: continue
             try:
                 pos = self.t.get_pos(i)
-                self.pvs[channel + "_MC"].set(pos)
-                self.pvs[channel + "_home"].set(False)
-                self.pvs[channel + "_away"].set(False)
-                self.pvs[channel + "_stop"].set(False)
-                self.pvs[channel + "_zero"].set(False)
+                self.pvs[channel + "_MC"].set(pos, process=False)
+                self.pvs[channel + "_home"].set(False, process=False)
+                self.pvs[channel + "_away"].set(False, process=False)
+                self.pvs[channel + "_stop"].set(False, process=False)
+                self.pvs[channel + "_zero"].set(False, process=False)
                 try:
                     if self.pvs[channel+"_pos_1"].get() - 4 < pos < self.pvs[channel+"_pos_1"].get() + 4:
-                        self.pvs[channel+"_locations"].set(1)
+                        self.pvs[channel+"_locations"].set(1, process=False)
                     elif self.pvs[channel+"_pos_2"].get() - 4 < pos < self.pvs[channel+"_pos_2"].get() + 4:
-                        self.pvs[channel+"_locations"].set(2)
+                        self.pvs[channel+"_locations"].set(2, process=False)
                     else:
-                        self.pvs[channel+"_locations"].set(0)
+                        self.pvs[channel+"_locations"].set(0, process=False)
                 except KeyError:
-                    self.pvs[channel+"_locations"].set(0)
+                    self.pvs[channel+"_locations"].set(0, process=False)
             except OSError as e:
                 print("Error initializing outs.", e)
                 self.reconnect()
@@ -76,19 +76,19 @@ class Device(BaseDevice):
             elif '_home' in pv_name:
                 if new_value:
                     self.pvs[p+"_MI"].set(self.t.home(chan))
-                    self.pvs[p+"_home"].set(False)
+                    self.pvs[p+"_home"].set(False, process=False)
             elif '_away' in pv_name:
                 if new_value:
                     self.pvs[p+"_MI"].set(self.t.away(chan))
-                    self.pvs[p+"_away"].set(False)
+                    self.pvs[p+"_away"].set(False, process=False)
             elif '_stop' in pv_name:
                 if new_value:
                     self.pvs[p+"_MI"].set(self.t.stop(chan))
-                    self.pvs[p+"_stop"].set(False)
+                    self.pvs[p+"_stop"].set(False, process=False)
             elif '_zero' in pv_name:
                 if new_value:
-                    self.pvs[p+"_zero"].set(self.t.set_zero(chan))
-                    self.pvs[p+"_zero"].set(False)
+                    self.pvs[p+"_zero"].set(self.t.set_zero(chan), process=False)
+                    self.pvs[p+"_zero"].set(False, process=False)
         except OSError:
             self.reconnect()
 

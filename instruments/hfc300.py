@@ -47,9 +47,9 @@ class Device(TelnetDevice):
         """Read and set OUT PVs at the start of the IOC"""
         for pv_name in self._skip_none_channels():
             try:
-                self.pvs[pv_name + '_MODE'].set(self.t.read_mode())
-                self.pvs[pv_name + '_SP'].set(self.t.read_setpoint())
-                self.pvs[pv_name + '_VP_MAN'].set(self.t.read_valve_manual())
+                self.pvs[pv_name + '_MODE'].set(self.t.read_mode(), process=False)
+                self.pvs[pv_name + '_SP'].set(self.t.read_setpoint(), process=False)
+                self.pvs[pv_name + '_VP_MAN'].set(self.t.read_valve_manual(), process=False)
             except OSError:
                 logging.error(f"Read out error on {pv_name}")
                 self.reconnect()
@@ -60,13 +60,13 @@ class Device(TelnetDevice):
         try:
             if pv_name.endswith('_MODE'):
                 result = self.t.set_mode(int(new_value))
-                self.pvs[pv_name].set(result)
+                self.pvs[pv_name].set(result, process=False)
             elif pv_name.endswith('_SP'):
                 result = self.t.set_setpoint(new_value)
-                self.pvs[pv_name].set(result)
+                self.pvs[pv_name].set(result, process=False)
             elif pv_name.endswith('_VP_MAN'):
                 result = self.t.set_valve_manual(new_value)
-                self.pvs[pv_name].set(result)
+                self.pvs[pv_name].set(result, process=False)
             else:
                 logging.error(f"Error, control PV not categorized: {pv_name}")
         except OSError:
@@ -83,7 +83,7 @@ class Device(TelnetDevice):
                 self.pvs[channel + "_SS"].set(self.t.read_system_state())
                 self.pvs[channel + "_SP_IMP"].set(self.t.read_impl_setpoint())
                 self.pvs[channel + "_VP"].set(self.t.read_valve_position())
-                self.pvs[channel + "_MODE"].set(self.t.read_mode())
+                self.pvs[channel + "_MODE"].set(self.t.read_mode(), process=False)
             self._handle_read_success(read_pvs)
             return True
         except OSError:

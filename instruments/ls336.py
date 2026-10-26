@@ -54,15 +54,15 @@ class Device(TelnetDevice):
                 for k in k_list:
                     dict[k] = self.pvs[p + "_" + k].get()  # read pvs to send to device
                 values = self.t.set_pid(chan, dict['kP'], dict['kI'], dict['kD'])
-                [self.pvs[p + "_" + k].set(values[i]) for i, k in enumerate(k_list)]  # set values read back
+                [self.pvs[p + "_" + k].set(values[i], process=False) for i, k in enumerate(k_list)]  # set values read back
             elif 'SP' in pv_name:  # is this a setpoint?
-                self.pvs[pv_name].set(self.t.set_setpoint(chan, new_value))  # set returned value
+                self.pvs[pv_name].set(self.t.set_setpoint(chan, new_value), process=False)  # set returned value
             elif 'Manual' in pv_name:  # is this a manual out?
-                self.pvs[pv_name].set(self.t.set_man_heater(chan, new_value))  # set returned value
+                self.pvs[pv_name].set(self.t.set_man_heater(chan, new_value), process=False)  # set returned value
             elif 'Mode' in pv_name:
-                self.pvs[pv_name].set(int(self.t.set_outmode(chan, new_value, chan, 0)))  # set returned value
+                self.pvs[pv_name].set(int(self.t.set_outmode(chan, new_value, chan, 0)), process=False)  # set returned value
             elif 'Range' in pv_name:
-                self.pvs[pv_name].set(int(self.t.set_range(chan, new_value)))  # set returned value
+                self.pvs[pv_name].set(int(self.t.set_range(chan, new_value)), process=False)  # set returned value
             else:
                 print('Error, control PV not categorized.')
         except OSError:
@@ -82,13 +82,13 @@ class Device(TelnetDevice):
                     self.remove_alarm(channel+'_TI')
                     self.pvs[channel + '_Heater'].set(self.t.read_heater(i + 1))
                     pids = self.t.read_pid(i + 1)
-                    self.pvs[channel + '_kP'].set(pids[0])
-                    self.pvs[channel + '_kI'].set(pids[1])
-                    self.pvs[channel + '_kD'].set(pids[2])
-                    self.pvs[channel + '_Mode'].set(int(self.t.read_outmode(i + 1)))
-                    self.pvs[channel + '_Range'].set(int(self.t.read_range(i + 1)))
-                    self.pvs[channel + '_SP'].set(self.t.read_setpoint(i + 1))
-                    self.pvs[channel + '_Manual'].set(self.t.read_man_heater(i + 1))
+                    self.pvs[channel + '_kP'].set(pids[0], process=False)
+                    self.pvs[channel + '_kI'].set(pids[1], process=False)
+                    self.pvs[channel + '_kD'].set(pids[2], process=False)
+                    self.pvs[channel + '_Mode'].set(int(self.t.read_outmode(i + 1)), process=False)
+                    self.pvs[channel + '_Range'].set(int(self.t.read_range(i + 1)), process=False)
+                    self.pvs[channel + '_SP'].set(self.t.read_setpoint(i + 1), process=False)
+                    self.pvs[channel + '_Manual'].set(self.t.read_man_heater(i + 1), process=False)
             self._handle_read_success()
             return True
         except OSError:

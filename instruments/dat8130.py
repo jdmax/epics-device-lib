@@ -33,7 +33,7 @@ class Device(ModbusDevice):
             values = self.t.read_coils()
             for i, channel in enumerate(self.channels[:4]):  # set all
                 if "None" in channel: continue
-                self.pvs[self.channels[i]].set(values[i])
+                self.pvs[self.channels[i]].set(values[i], process=False)
         except OSError:
             self.reconnect()
 
@@ -45,7 +45,7 @@ class Device(ModbusDevice):
             values = self.t.set_coil(num, new_value)
             for i, channel in enumerate(self.channels[:4]):  # set all
                 if "None" in channel: continue
-                self.pvs[self.channels[i]].set(values[i])
+                self.pvs[self.channels[i]].set(values[i], process=False)
                 self.remove_alarm(channel)
             self._handle_read_success()
             return True

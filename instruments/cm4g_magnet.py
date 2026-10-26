@@ -41,10 +41,10 @@ class Device(TelnetDevice):
         """Read and set OUT PVs at the start of the IOC"""
         for pv_name in self._skip_none_channels():
             try:
-                self.pvs[pv_name + '_ULIM'].set(self.t.read_ulim())
-                self.pvs[pv_name + '_LLIM'].set(self.t.read_llim())
-                self.pvs[pv_name + '_Sweep'].set(self.t.read_sweep())
-                self.pvs[pv_name + '_Heater'].set(self.t.read_heater())
+                self.pvs[pv_name + '_ULIM'].set(self.t.read_ulim(), process=False)
+                self.pvs[pv_name + '_LLIM'].set(self.t.read_llim(), process=False)
+                self.pvs[pv_name + '_Sweep'].set(self.t.read_sweep(), process=False)
+                self.pvs[pv_name + '_Heater'].set(self.t.read_heater(), process=False)
             except OSError:
                 print("Read out error on", pv_name)
                 self.reconnect()
@@ -57,10 +57,10 @@ class Device(TelnetDevice):
         try:
             if '_ULIM' in pv_name:
                 value = self.t.set_ulim(self.pvs[p + '_ULIM'].get())
-                self.pvs[pv_name].set(float(value))
+                self.pvs[pv_name].set(float(value), process=False)
             elif '_LLIM' in pv_name:
                 value = self.t.set_llim(self.pvs[p + '_LLIM'].get())
-                self.pvs[pv_name].set(float(value))
+                self.pvs[pv_name].set(float(value), process=False)
             elif '_Sweep' in pv_name:
                 value = self.t.set_sweep(self.pvs[p + '_Sweep'].get())
                 # Safety check: if heater on, don't allow fast sweep modes
@@ -69,7 +69,7 @@ class Device(TelnetDevice):
                 self.pvs[pv_name].set(int(value))
             elif '_Heater' in pv_name:
                 value = self.t.set_heater(self.pvs[p + '_Heater'].get())
-                self.pvs[pv_name].set(int(value))
+                self.pvs[pv_name].set(int(value), process=False)
             else:
                 print('Error, control PV not categorized.', pv_name)
         except OSError:
@@ -89,7 +89,10 @@ class Device(TelnetDevice):
 
             # Set all PV values
             for channel, value in new_reads.items():
-                self.pvs[channel].set(value)
+                if channel.endswith(('_Heater', '_Sweep')):  # OUT PVs, don't call do_sets
+                    self.pvs[channel].set(value, process=False)
+                else:
+                    self.pvs[channel].set(value)
 
             self._handle_read_success([ch + "_VI" for ch in self._skip_none_channels()])
             return True

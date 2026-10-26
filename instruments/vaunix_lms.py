@@ -75,10 +75,10 @@ class Device(TelnetDevice):
         channel = self._skip_none_channels()[0]
         try:
             freq, power, rf, ref, lock = self.t.read_all()
-            self.pvs[channel + '_FC'].set(freq)
-            self.pvs[channel + '_PWRC'].set(power)
-            self.pvs[channel + '_RF'].set(rf)
-            self.pvs[channel + '_Ref'].set(ref)
+            self.pvs[channel + '_FC'].set(freq, process=False)
+            self.pvs[channel + '_PWRC'].set(power, process=False)
+            self.pvs[channel + '_RF'].set(rf, process=False)
+            self.pvs[channel + '_Ref'].set(ref, process=False)
         except DeviceRefused as e:
             logging.error("Vaunix LMS refused the startup read: %s", e)
         except OSError:
@@ -98,9 +98,9 @@ class Device(TelnetDevice):
             elif pv_name.endswith('_PWRC'):
                 self.pvs[channel + '_PWRI'].set(self.t.set_power(new_value))
             elif pv_name.endswith('_RF'):
-                self.pvs[channel + '_RF'].set(self.t.set_rf(new_value))
+                self.pvs[channel + '_RF'].set(self.t.set_rf(new_value), process=False)
             elif pv_name.endswith('_Ref'):
-                self.pvs[channel + '_Ref'].set(self.t.set_ref(new_value))
+                self.pvs[channel + '_Ref'].set(self.t.set_ref(new_value), process=False)
             else:
                 logging.error("Vaunix LMS control PV not categorized: %s", pv_name)
         except DeviceRefused as e:
@@ -121,8 +121,8 @@ class Device(TelnetDevice):
             self.pvs[channel + '_FI'].set(freq)
             self.pvs[channel + '_OutFI'].set(freq * self.multiplier)
             self.pvs[channel + '_PWRI'].set(power)
-            self.pvs[channel + '_RF'].set(rf)
-            self.pvs[channel + '_Ref'].set(ref)
+            self.pvs[channel + '_RF'].set(rf, process=False)
+            self.pvs[channel + '_Ref'].set(ref, process=False)
             self.pvs[channel + '_Lock'].set(lock)
 
             self._handle_read_success()

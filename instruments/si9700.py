@@ -30,8 +30,8 @@ class Device(TelnetDevice):
             if "None" in pv_name: continue
             setpoint, heater, mode = self.t.read_status()
             try:
-                self.pvs[pv_name + '_SP'].set(setpoint)
-                self.pvs[pv_name + '_Mode'].set(mode)
+                self.pvs[pv_name + '_SP'].set(setpoint, process=False)
+                self.pvs[pv_name + '_Mode'].set(mode, process=False)
             except OSError:
                 print("Read out error on", pv_name)
                 self.reconnect()
@@ -44,10 +44,10 @@ class Device(TelnetDevice):
         try:
             if '_SP' in pv_name:
                 value = self.t.set_setpoint(self.pvs[pv_name].get())
-                self.pvs[pv_name].set(value)  # set returned value
+                self.pvs[pv_name].set(value, process=False)  # set returned value
             elif '_Mode' in pv_name:
                 value = self.t.set_mode(self.pvs[pv_name].get())
-                self.pvs[pv_name].set(value)  # set returned value
+                self.pvs[pv_name].set(value, process=False)  # set returned value
             else:
                 print('Error, control PV not categorized.', pv_name)
         except OSError:

@@ -31,10 +31,10 @@ class Device(TelnetDevice):
             if "None" in pv_name: continue
             try:
                 values = self.t.read_sp(str(i+1))
-                self.pvs[pv_name + '_VC'].set(values[0])  # set returned voltage
-                self.pvs[pv_name + '_CC'].set(values[1])  # set returned current
+                self.pvs[pv_name + '_VC'].set(values[0], process=False)  # set returned voltage
+                self.pvs[pv_name + '_CC'].set(values[1], process=False)  # set returned current
                 value = self.t.set_state(str(i+1), self.pvs[pv_name].get())
-                self.pvs[pv_name + '_Mode'].set(int(value))  # set returned value
+                self.pvs[pv_name + '_Mode'].set(int(value), process=False)  # set returned value
             except OSError:
                 print("Read out error on", pv_name)
                 self.reconnect()
@@ -49,11 +49,11 @@ class Device(TelnetDevice):
         try:
             if 'CC' in pv_name or 'VC' in pv_name:  # is this a current set? Voltage set from settings file
                 values = self.t.set(chan, self.pvs[p + '_VC'].get(), self.pvs[p + '_CC'].get())
-                self.pvs[p + '_VC'].set(values[0])  # set returned voltage
-                self.pvs[p + '_CC'].set(values[1])  # set returned current
+                self.pvs[p + '_VC'].set(values[0], process=False)  # set returned voltage
+                self.pvs[p + '_CC'].set(values[1], process=False)  # set returned current
             elif 'Mode' in pv_name:
                 value = self.t.set_state(chan, new_value)
-                self.pvs[pv_name].set(int(value))  # set returned value
+                self.pvs[pv_name].set(int(value), process=False)  # set returned value
             else:
                 print('Error, control PV not categorized.', pv_name)
         except OSError:
@@ -70,7 +70,10 @@ class Device(TelnetDevice):
                 new_reads[channel + '_VC'], new_reads[channel + '_CC'] = self.t.read_sp(i + 1)
                 new_reads[channel + '_Mode'] = self.t.read_state(i + 1)
             for channel, value in new_reads.items():
-                self.pvs[channel].set(value)
+                if channel.endswith(('_VC', '_CC', '_Mode')):  # OUT PVs, don't call do_sets
+                    self.pvs[channel].set(value, process=False)
+                else:
+                    self.pvs[channel].set(value)
 
             self._handle_read_success()
             return True

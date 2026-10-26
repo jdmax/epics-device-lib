@@ -56,7 +56,7 @@ class Device(BaseDevice):
         for pv_name in self._skip_none_channels():
             try:
                 data = await self.t.read_all()
-                self.pvs[pv_name + '_SP'].set(data['setpoint'])
+                self.pvs[pv_name + '_SP'].set(data['setpoint'], process=False)
             except OSError:
                 logging.error(f"Read out error on {pv_name}")
                 self.reconnect()
