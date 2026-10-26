@@ -3,7 +3,11 @@ from softioc import builder
 
 
 class Device(ModbusDevice):
-    """Datexel 8024 Analog Output Module"""
+    """Datexel 8024 Analog Output Module
+
+    Readbacks from the module are put into the OUT PVs with process=False, so
+    they show what the module holds without calling do_sets and writing it back.
+    """
 
     def _create_pvs(self):
         """Create analog output PVs"""
@@ -20,7 +24,7 @@ class Device(ModbusDevice):
             readings = self.t.read_all(40, 4)
             for i, channel in enumerate(self._skip_none_channels()):
                 processed_value = self._process_reading(channel, readings[i])
-                self.pvs[channel].set(processed_value)
+                self.pvs[channel].set(processed_value, process=False)
             self._handle_read_success()
             return True
         except (OSError, TypeError, AttributeError) as e:
@@ -32,7 +36,7 @@ class Device(ModbusDevice):
         try:
             values = self.t.read_all(40, 4)
             for i, channel in enumerate(list(self._skip_none_channels())[:4]):  # Only 4 outputs
-                self.pvs[channel].set(values[i])
+                self.pvs[channel].set(self._process_reading(channel, values[i]), process=False)
         except OSError:
             self.reconnect()
 
@@ -41,11 +45,11 @@ class Device(ModbusDevice):
         pv_name = pv.replace(self.device_name + ':', '')
         num = list(self._skip_none_channels()).index(pv_name)
         try:
-            self.t.set_register(40 + num, int(new_value * 1000))
+            self.t.set_register(40 + num, round(new_value * 1000))
             readings = self.t.read_all(40, 4)
             for i, channel in enumerate(list(self._skip_none_channels())[:4]):
                 processed_value = self._process_reading(channel, readings[i])
-                self.pvs[channel].set(processed_value)
+                self.pvs[channel].set(processed_value, process=False)
         except (OSError, TypeError):
             self.reconnect()
 
