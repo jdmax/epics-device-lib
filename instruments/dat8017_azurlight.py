@@ -17,6 +17,9 @@ class Device(ModbusDevice):
         [a, b]     - linear with offset, value = V*a + b
         anything else - raw volts
 
+    Converted values are rounded to the channel's PREC from settings['records']
+    (default 3 decimals) so the posted value matches the displayed precision.
+
     When the laser is off all monitor outputs drop below ~0.2 V. The Lmon
     voltage is compared to settings['on_threshold'] to set Laser_On; while
     off, current and power channels read 0, and temperature and limit
@@ -26,17 +29,21 @@ class Device(ModbusDevice):
     B_COEFF = 3450      # NTC beta value from Azurlight manual
     T_REF = 298.15      # K, temperature where Vt = 1 V
     OFF_INVALID = ('temp', 'limit')  # calibrations with no meaning while laser is off
+    DEFAULT_PREC = 3    # decimals kept when a channel has no PREC in settings['records']
 
     def __init__(self, device_name, settings):
         self.calibs = {}
+        self.precs = {}
         self.mv_per_count = settings.get('mv_per_count', 1.0)  # register units -> mV
         self.on_threshold = settings.get('on_threshold', 0.5)  # Lmon volts; above = laser on
         super().__init__(device_name, settings)
 
     def _create_pvs(self):
         """Create analog input PVs with calibration info, plus laser on/off state"""
+        records = self.settings.get('records', {})
         for channel in self._skip_none_channels():
             self.calibs[channel] = self.settings['calibration'].get(channel)
+            self.precs[channel] = records.get(channel, {}).get('PREC', self.DEFAULT_PREC)
             self.pvs[channel] = builder.aIn(channel, **self.sevr)
         self.pvs['Laser_On'] = builder.boolIn('Laser_On', ZNAM='Off', ONAM='On', DISP=self.sevr['DISP'])
 
@@ -62,7 +69,7 @@ class Device(ModbusDevice):
                     self.remove_alarm(channel)
                 else:
                     try:
-                        self.pvs[channel].set(self._convert(channel, v))
+                        self.pvs[channel].set(round(self._convert(channel, v), self.precs[channel]))
                         self.remove_alarm(channel)
                     except ValueError as e:  # bad value on one channel; invalidate it alone
                         print(e)

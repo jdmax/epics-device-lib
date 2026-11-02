@@ -6,6 +6,7 @@
 # (pin 5 COMMON -> module input common). Keep the order; rename freely.
 # The 3rd channel (Lmon) is compared to on_threshold to set Laser_On. While the laser is off,
 # 'current' and power channels read 0 and 'temp'/'limit' channels go INVALID.
+# Values are rounded to each channel's PREC under records (default 3 decimals).
 azurlight_mon:
   module: 'devices.instruments.dat8017_azurlight'
   autostart: True
