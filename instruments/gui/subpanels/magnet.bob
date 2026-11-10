@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>$(CH) Magnet Supply</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <CH>CH</CH>
+  </macros>
+  <width>860</width>
+  <height>450</height>
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <x>0</x>
+    <y>0</y>
+    <width>860</width>
+    <height>30</height>
+    <text>$(CH) Magnet Supply</text>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0"/>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255"/>
+    </foreground_color>
+    <background_color>
+      <color name="Header_Background" red="77" green="77" blue="77"/>
+    </background_color>
+    <transparent>false</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Readbacks</name>
+    <x>10</x>
+    <y>40</y>
+    <width>240</width>
+    <height>110</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Coil current</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Coil_CI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Lead current</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Lead_CI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Voltage</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_2</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_VI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Sweep</name>
+    <x>10</x>
+    <y>160</y>
+    <width>240</width>
+    <height>115</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Sweep mode</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Combo Box</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Sweep</pv_name>
+      <items_from_pv>true</items_from_pv>
+      <tooltip>Fast modes are refused while the switch heater is on</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Persistent heater</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Boolean Button</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>22</height>
+      <pv_name>$(P):$(CH)_Heater</pv_name>
+      <labels_from_pv>true</labels_from_pv>
+      <confirm_dialog>1</confirm_dialog>
+      <confirm_message>Change the persistent switch heater?</confirm_message>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button</name>
+      <x>5</x>
+      <y>55</y>
+      <width>52</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_Sweep</pv_name>
+          <value>0</value>
+          <description>Up</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_Sweep</pv_name>
+      <text>Up</text>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button_1</name>
+      <x>62</x>
+      <y>55</y>
+      <width>52</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_Sweep</pv_name>
+          <value>1</value>
+          <description>Down</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_Sweep</pv_name>
+      <text>Down</text>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button_2</name>
+      <x>119</x>
+      <y>55</y>
+      <width>52</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_Sweep</pv_name>
+          <value>2</value>
+          <description>Pause</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_Sweep</pv_name>
+      <text>Pause</text>
+      <background_color>
+        <color name="MINOR" red="255" green="128" blue="0"/>
+      </background_color>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button_3</name>
+      <x>176</x>
+      <y>55</y>
+      <width>54</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_Sweep</pv_name>
+          <value>3</value>
+          <description>Zero</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_Sweep</pv_name>
+      <text>Zero</text>
+      <confirm_dialog>true</confirm_dialog>
+      <confirm_message>Sweep the magnet to zero?</confirm_message>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Limits</name>
+    <x>10</x>
+    <y>285</y>
+    <width>240</width>
+    <height>85</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Upper (ULIM)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_ULIM</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Lower (LLIM)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_1</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_LLIM</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+  </widget>
+  <widget type="stripchart" version="2.1.0">
+    <name>Strip Chart</name>
+    <x>265</x>
+    <y>40</y>
+    <width>585</width>
+    <height>400</height>
+    <title/>
+    <show_toolbar>true</show_toolbar>
+    <show_legend>true</show_legend>
+    <time_range>10 minutes</time_range>
+    <y_axes>
+      <y_axis>
+        <title>Current</title>
+        <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>true</show_grid>
+        <visible>true</visible>
+        <color>
+          <color red="0" green="0" blue="0"/>
+        </color>
+      </y_axis>
+      <y_axis>
+        <title>Voltage</title>
+        <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>true</show_grid>
+        <visible>true</visible>
+        <color>
+          <color red="0" green="0" blue="0"/>
+        </color>
+      </y_axis>
+    </y_axes>
+    <traces>
+      <trace>
+        <name>Coil</name>
+        <y_pv>$(P):$(CH)_Coil_CI</y_pv>
+        <axis>0</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="0" green="0" blue="255"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+      <trace>
+        <name>Lead</name>
+        <y_pv>$(P):$(CH)_Lead_CI</y_pv>
+        <axis>0</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="255" green="0" blue="0"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+      <trace>
+        <name>Voltage</name>
+        <y_pv>$(P):$(CH)_VI</y_pv>
+        <axis>1</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="0" green="160" blue="0"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+    </traces>
+  </widget>
+</display>

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>$(CH) LS336 Loop</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <CH>CH</CH>
+  </macros>
+  <width>860</width>
+  <height>450</height>
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <x>0</x>
+    <y>0</y>
+    <width>860</width>
+    <height>30</height>
+    <text>$(CH) LS336 Loop</text>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0"/>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255"/>
+    </foreground_color>
+    <background_color>
+      <color name="Header_Background" red="77" green="77" blue="77"/>
+    </background_color>
+    <transparent>false</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Process</name>
+    <x>10</x>
+    <y>40</y>
+    <width>240</width>
+    <height>110</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Temperature</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_TI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Setpoint</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_SP</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Heater output</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Heater</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Control</name>
+    <x>10</x>
+    <y>160</y>
+    <width>240</width>
+    <height>110</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Output mode</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Combo Box</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Mode</pv_name>
+      <items_from_pv>true</items_from_pv>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Heater range</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Combo Box_1</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Range</pv_name>
+      <items_from_pv>true</items_from_pv>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Manual output</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_1</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Manual</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <tooltip>_Manual: heater % in Open Loop</tooltip>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Gains</name>
+    <x>10</x>
+    <y>280</y>
+    <width>240</width>
+    <height>110</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>P</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_2</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_kP</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_7</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>I</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_3</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_kI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_8</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>D</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_4</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_kD</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+  </widget>
+  <widget type="stripchart" version="2.1.0">
+    <name>Strip Chart</name>
+    <x>265</x>
+    <y>40</y>
+    <width>585</width>
+    <height>400</height>
+    <title/>
+    <show_toolbar>true</show_toolbar>
+    <show_legend>true</show_legend>
+    <time_range>10 minutes</time_range>
+    <y_axes>
+      <y_axis>
+        <title>Temperature</title>
+        <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>true</show_grid>
+        <visible>true</visible>
+        <color>
+          <color red="0" green="0" blue="0"/>
+        </color>
+      </y_axis>
+      <y_axis>
+        <title>Heater</title>
+        <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>true</show_grid>
+        <visible>true</visible>
+        <color>
+          <color red="0" green="0" blue="0"/>
+        </color>
+      </y_axis>
+    </y_axes>
+    <traces>
+      <trace>
+        <name>TI</name>
+        <y_pv>$(P):$(CH)_TI</y_pv>
+        <axis>0</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="0" green="0" blue="255"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+      <trace>
+        <name>SP</name>
+        <y_pv>$(P):$(CH)_SP</y_pv>
+        <axis>0</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="255" green="0" blue="0"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+      <trace>
+        <name>Heater</name>
+        <y_pv>$(P):$(CH)_Heater</y_pv>
+        <axis>1</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="0" green="160" blue="0"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+    </traces>
+  </widget>
+</display>

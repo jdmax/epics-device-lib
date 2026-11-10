@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>Digital output</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <GUI>..</GUI>
+    <CH>CH</CH>
+    <LABEL>$(CH)</LABEL>
+  </macros>
+  <width>230</width>
+  <height>24</height>
+  <widget type="group" version="2.0.0">
+    <name>Digital output</name>
+    <x>0</x>
+    <y>0</y>
+    <width>230</width>
+    <height>24</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>0</x>
+      <y>0</y>
+      <width>130</width>
+      <height>20</height>
+      <text>$(LABEL)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Boolean Button</name>
+      <x>135</x>
+      <y>0</y>
+      <width>90</width>
+      <height>22</height>
+      <pv_name>$(P):$(CH)</pv_name>
+      <labels_from_pv>true</labels_from_pv>
+    </widget>
+  </widget>
+</display>

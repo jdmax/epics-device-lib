@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>$(CH) PID Loop</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <CH>CH</CH>
+  </macros>
+  <width>860</width>
+  <height>470</height>
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <x>0</x>
+    <y>0</y>
+    <width>860</width>
+    <height>30</height>
+    <text>$(CH) PID Loop</text>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0"/>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255"/>
+    </foreground_color>
+    <background_color>
+      <color name="Header_Background" red="77" green="77" blue="77"/>
+    </background_color>
+    <transparent>false</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Process</name>
+    <x>10</x>
+    <y>40</y>
+    <width>240</width>
+    <height>110</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Process value</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_PV</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <tooltip>_PV: input read from input_pv</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Setpoint</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_SP</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <tooltip>_SP</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Control output</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_CV</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+      <tooltip>_CV: value written to output_pv</tooltip>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Mode</name>
+    <x>10</x>
+    <y>160</y>
+    <width>240</width>
+    <height>85</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Mode</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Combo Box</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_Mode</pv_name>
+      <items_from_pv>true</items_from_pv>
+      <tooltip>_Mode: Manual / Auto</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Manual output</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_1</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_MV</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <tooltip>_MV: output used in Manual; Auto starts from it</tooltip>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Gains</name>
+    <x>10</x>
+    <y>255</y>
+    <width>240</width>
+    <height>110</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Kp</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_2</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_KP</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Ki</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_3</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_KI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_7</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Kd</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_4</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_KD</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Output limits</name>
+    <x>10</x>
+    <y>375</y>
+    <width>240</width>
+    <height>85</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_8</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>High (DRVH)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_5</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_DRVH</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_9</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Low (DRVL)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_6</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_DRVL</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+  </widget>
+  <widget type="stripchart" version="2.1.0">
+    <name>Strip Chart</name>
+    <x>265</x>
+    <y>40</y>
+    <width>585</width>
+    <height>420</height>
+    <title/>
+    <show_toolbar>true</show_toolbar>
+    <show_legend>true</show_legend>
+    <time_range>10 minutes</time_range>
+    <y_axes>
+      <y_axis>
+        <title>Process</title>
+        <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>true</show_grid>
+        <visible>true</visible>
+        <color>
+          <color red="0" green="0" blue="0"/>
+        </color>
+      </y_axis>
+      <y_axis>
+        <title>Output</title>
+        <autoscale>true</autoscale>
+        <log_scale>false</log_scale>
+        <minimum>0.0</minimum>
+        <maximum>100.0</maximum>
+        <show_grid>true</show_grid>
+        <visible>true</visible>
+        <color>
+          <color red="0" green="0" blue="0"/>
+        </color>
+      </y_axis>
+    </y_axes>
+    <traces>
+      <trace>
+        <name>PV</name>
+        <y_pv>$(P):$(CH)_PV</y_pv>
+        <axis>0</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="0" green="0" blue="255"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+      <trace>
+        <name>SP</name>
+        <y_pv>$(P):$(CH)_SP</y_pv>
+        <axis>0</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="255" green="0" blue="0"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+      <trace>
+        <name>CV</name>
+        <y_pv>$(P):$(CH)_CV</y_pv>
+        <axis>1</axis>
+        <trace_type>2</trace_type>
+        <color>
+          <color red="0" green="160" blue="0"/>
+        </color>
+        <line_width>2</line_width>
+        <point_type>0</point_type>
+        <point_size>10</point_size>
+        <visible>true</visible>
+      </trace>
+    </traces>
+  </widget>
+</display>

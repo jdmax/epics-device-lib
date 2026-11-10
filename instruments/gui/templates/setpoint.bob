@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>Setpoint</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <GUI>..</GUI>
+    <CH>CH</CH>
+    <RB>$(CH)</RB>
+    <LABEL>$(CH)</LABEL>
+  </macros>
+  <width>370</width>
+  <height>22</height>
+  <widget type="group" version="2.0.0">
+    <name>Setpoint</name>
+    <x>0</x>
+    <y>0</y>
+    <width>370</width>
+    <height>22</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>0</x>
+      <y>0</y>
+      <width>140</width>
+      <height>20</height>
+      <text>$(LABEL)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <x>145</x>
+      <y>0</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>260</x>
+      <y>0</y>
+      <width>105</width>
+      <height>20</height>
+      <pv_name>$(P):$(RB)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+  </widget>
+</display>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>$(CH) Motor</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <CH>CH</CH>
+  </macros>
+  <width>520</width>
+  <height>330</height>
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>30</height>
+    <text>$(CH) Motor</text>
+    <font>
+      <font name="Header 2" family="Liberation Sans" style="BOLD" size="18.0"/>
+    </font>
+    <foreground_color>
+      <color name="Header_ForeGround" red="255" green="255" blue="255"/>
+    </foreground_color>
+    <background_color>
+      <color name="Header_Background" red="77" green="77" blue="77"/>
+    </background_color>
+    <transparent>false</transparent>
+    <horizontal_alignment>1</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Position</name>
+    <x>10</x>
+    <y>40</y>
+    <width>240</width>
+    <height>110</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Position</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_MI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Move to</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_MC</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Go to preset</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Combo Box</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_locations</pv_name>
+      <items_from_pv>true</items_from_pv>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Commands</name>
+    <x>260</x>
+    <y>40</y>
+    <width>240</width>
+    <height>95</height>
+    <style>0</style>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button</name>
+      <x>5</x>
+      <y>5</y>
+      <width>70</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_home</pv_name>
+          <value>1</value>
+          <description>Home</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_home</pv_name>
+      <text>Home</text>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button_1</name>
+      <x>80</x>
+      <y>5</y>
+      <width>70</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_away</pv_name>
+          <value>1</value>
+          <description>Away</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_away</pv_name>
+      <text>Away</text>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button_2</name>
+      <x>155</x>
+      <y>5</y>
+      <width>70</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_stop</pv_name>
+          <value>1</value>
+          <description>Stop</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_stop</pv_name>
+      <text>Stop</text>
+      <background_color>
+        <color name="STOP" red="255" green="0" blue="0"/>
+      </background_color>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button_3</name>
+      <x>5</x>
+      <y>35</y>
+      <width>70</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_zero</pv_name>
+          <value>1</value>
+          <description>Zero</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_zero</pv_name>
+      <text>Zero</text>
+      <confirm_dialog>true</confirm_dialog>
+      <confirm_message>Redefine the current position as zero?</confirm_message>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Preset positions</name>
+    <x>10</x>
+    <y>160</y>
+    <width>240</width>
+    <height>135</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <x>5</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Preset 0</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_1</name>
+      <x>120</x>
+      <y>5</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_pos_0</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <tooltip>_pos_0: position of preset 0</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <x>5</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Preset 1</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_2</name>
+      <x>120</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_pos_1</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <tooltip>_pos_1: position of preset 1</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <x>5</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Preset 2</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_3</name>
+      <x>120</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_pos_2</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <tooltip>_pos_2: position of preset 2</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <x>5</x>
+      <y>80</y>
+      <width>110</width>
+      <height>20</height>
+      <text>Preset 3</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_4</name>
+      <x>120</x>
+      <y>80</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_pos_3</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <tooltip>_pos_3: position of preset 3</tooltip>
+    </widget>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_7</name>
+    <x>10</x>
+    <y>300</y>
+    <width>500</width>
+    <height>20</height>
+    <text>Preset 0 is the "not at a preset" entry. Unused rows show as disconnected.</text>
+    <font>
+      <font name="Small" family="Liberation Sans" style="REGULAR" size="12.0"/>
+    </font>
+    <horizontal_alignment>0</horizontal_alignment>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+</display>

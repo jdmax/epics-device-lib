@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>Digital input</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <GUI>..</GUI>
+    <CH>CH</CH>
+    <LABEL>$(CH)</LABEL>
+  </macros>
+  <width>230</width>
+  <height>22</height>
+  <widget type="group" version="2.0.0">
+    <name>Digital input</name>
+    <x>0</x>
+    <y>0</y>
+    <width>230</width>
+    <height>22</height>
+    <style>3</style>
+    <widget type="led" version="2.0.0">
+      <name>LED</name>
+      <x>0</x>
+      <y>0</y>
+      <width>20</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)</pv_name>
+      <labels_from_pv>true</labels_from_pv>
+      <off_label>Off</off_label>
+      <on_label>On</on_label>
+      <off_color>
+        <color name="Off" red="60" green="100" blue="60"/>
+      </off_color>
+      <on_color>
+        <color name="On" red="0" green="255" blue="0"/>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>28</x>
+      <y>0</y>
+      <width>120</width>
+      <height>20</height>
+      <text>$(LABEL)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>150</x>
+      <y>0</y>
+      <width>75</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+  </widget>
+</display>

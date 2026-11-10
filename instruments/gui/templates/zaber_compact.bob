@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>Zaber compact</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <GUI>..</GUI>
+    <CH>CH</CH>
+    <LABEL>$(CH)</LABEL>
+  </macros>
+  <width>215</width>
+  <height>137</height>
+  <widget type="group" version="2.0.0">
+    <name>$(LABEL)</name>
+    <x>0</x>
+    <y>0</y>
+    <width>215</width>
+    <height>137</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>5</x>
+      <y>5</y>
+      <width>70</width>
+      <height>20</height>
+      <text>Position</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>80</x>
+      <y>5</y>
+      <width>120</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_MI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <x>5</x>
+      <y>30</y>
+      <width>70</width>
+      <height>20</height>
+      <text>Move to</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <x>80</x>
+      <y>30</y>
+      <width>120</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_MC</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <x>5</x>
+      <y>55</y>
+      <width>70</width>
+      <height>20</height>
+      <text>Preset</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Combo Box</name>
+      <x>80</x>
+      <y>55</y>
+      <width>120</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_locations</pv_name>
+      <items_from_pv>true</items_from_pv>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button</name>
+      <x>5</x>
+      <y>80</y>
+      <width>70</width>
+      <height>22</height>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(CH)_stop</pv_name>
+          <value>1</value>
+          <description>Stop</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(CH)_stop</pv_name>
+      <text>Stop</text>
+      <background_color>
+        <color name="STOP" red="255" green="0" blue="0"/>
+      </background_color>
+    </widget>
+    <widget type="action_button" version="2.0.0">
+      <name>Action Button_1</name>
+      <x>115</x>
+      <y>80</y>
+      <width>80</width>
+      <height>22</height>
+      <actions>
+        <action type="open_display">
+          <file>$(GUI)/subpanels/zaber_motor.bob</file>
+          <target>window</target>
+          <description>Details…</description>
+        </action>
+      </actions>
+      <text>Details…</text>
+      <tooltip>Open $(GUI)/subpanels/zaber_motor.bob</tooltip>
+    </widget>
+  </widget>
+</display>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>Laser monitor</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <GUI>..</GUI>
+    <LABEL>Laser</LABEL>
+    <AMP_I>Laser_Amp_I</AMP_I>
+    <POWER>Laser_Power</POWER>
+    <AMP_ILIM>Laser_Amp_ILim</AMP_ILIM>
+    <PREAMP_I>Laser_PreAmp_I</PREAMP_I>
+    <PUMP_T>Laser_Pump_T</PUMP_T>
+    <PUMP_TSP>Laser_Pump_TSP</PUMP_TSP>
+    <HEAD_T>Laser_Head_T</HEAD_T>
+    <HEAD_TSP>Laser_Head_TSP</HEAD_TSP>
+  </macros>
+  <width>260</width>
+  <height>260</height>
+  <widget type="group" version="2.0.0">
+    <name>$(LABEL)</name>
+    <x>0</x>
+    <y>0</y>
+    <width>260</width>
+    <height>260</height>
+    <style>0</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>5</x>
+      <y>5</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Laser on</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>LED</name>
+      <x>140</x>
+      <y>5</y>
+      <width>20</width>
+      <height>20</height>
+      <pv_name>$(P):Laser_On</pv_name>
+      <labels_from_pv>true</labels_from_pv>
+      <off_label>Off</off_label>
+      <on_label>On</on_label>
+      <off_color>
+        <color name="Off" red="60" green="100" blue="60"/>
+      </off_color>
+      <on_color>
+        <color name="On" red="0" green="255" blue="0"/>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <x>5</x>
+      <y>30</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Amp current</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>140</x>
+      <y>30</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(AMP_I)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <x>5</x>
+      <y>55</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Output power</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <x>140</x>
+      <y>55</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(POWER)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <x>5</x>
+      <y>80</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Amp current limit</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_2</name>
+      <x>140</x>
+      <y>80</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(AMP_ILIM)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <x>5</x>
+      <y>105</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Pre-amp current</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_3</name>
+      <x>140</x>
+      <y>105</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(PREAMP_I)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <x>5</x>
+      <y>130</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Pump temp</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_4</name>
+      <x>140</x>
+      <y>130</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(PUMP_T)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <x>5</x>
+      <y>155</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Pump temp set</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_5</name>
+      <x>140</x>
+      <y>155</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(PUMP_TSP)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_7</name>
+      <x>5</x>
+      <y>180</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Head temp</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_6</name>
+      <x>140</x>
+      <y>180</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(HEAD_T)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_8</name>
+      <x>5</x>
+      <y>205</y>
+      <width>130</width>
+      <height>20</height>
+      <text>Head temp set</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_7</name>
+      <x>140</x>
+      <y>205</y>
+      <width>110</width>
+      <height>20</height>
+      <pv_name>$(P):$(HEAD_TSP)</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+  </widget>
+</display>

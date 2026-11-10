@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated template; edit freely in Phoebus Display Builder. -->
+<display version="2.0.0">
+  <name>DP832 channel</name>
+  <macros>
+    <P>TGT:EXAMPLE</P>
+    <GUI>..</GUI>
+    <CH>CH</CH>
+    <LABEL>$(CH)</LABEL>
+  </macros>
+  <width>510</width>
+  <height>50</height>
+  <widget type="group" version="2.0.0">
+    <name>DP832 header</name>
+    <x>0</x>
+    <y>0</y>
+    <width>510</width>
+    <height>22</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>Label</name>
+      <x>0</x>
+      <y>0</y>
+      <width>90</width>
+      <height>20</height>
+      <text>Channel</text>
+      <font>
+        <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"/>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_1</name>
+      <x>95</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <text>V read</text>
+      <font>
+        <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"/>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_2</name>
+      <x>180</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <text>I read</text>
+      <font>
+        <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"/>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_3</name>
+      <x>265</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <text>V set</text>
+      <font>
+        <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"/>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_4</name>
+      <x>350</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <text>I set</text>
+      <font>
+        <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"/>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_5</name>
+      <x>435</x>
+      <y>0</y>
+      <width>70</width>
+      <height>20</height>
+      <text>Output</text>
+      <font>
+        <font name="Default Bold" family="Liberation Sans" style="BOLD" size="14.0"/>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>$(LABEL)</name>
+    <x>0</x>
+    <y>25</y>
+    <width>510</width>
+    <height>22</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <x>0</x>
+      <y>0</y>
+      <width>90</width>
+      <height>20</height>
+      <text>$(LABEL)</text>
+      <horizontal_alignment>0</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update</name>
+      <x>95</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_VI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <x>180</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_CI</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <x>265</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_VC</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_1</name>
+      <x>350</x>
+      <y>0</y>
+      <width>80</width>
+      <height>20</height>
+      <pv_name>$(P):$(CH)_CC</pv_name>
+      <show_units>true</show_units>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>Boolean Button</name>
+      <x>435</x>
+      <y>0</y>
+      <width>70</width>
+      <height>22</height>
+      <pv_name>$(P):$(CH)_Mode</pv_name>
+      <labels_from_pv>true</labels_from_pv>
+    </widget>
+  </widget>
+</display>
