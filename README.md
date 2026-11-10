@@ -15,7 +15,9 @@ BaseDevice  (base_device.py)
 │   ├── instruments/dat8017_azurlight.py — Datexel DAT8017-V reading Azurlight laser DB9 monitor outputs
 │   ├── instruments/dat8018.py   — Datexel DAT8018 thermocouple reader
 │   ├── instruments/dat8024.py   — Datexel DAT8024 analog output module
-│   └── instruments/dat8130.py   — Datexel DAT8130 relay / DI module
+│   ├── instruments/dat8130.py   — Datexel DAT8130 relay / DI module
+│   ├── instruments/dat8188.py   — Datexel DAT8188 8 DI / 8 PNP output module
+│   └── instruments/dat8188_surestep.py — SureStep stepper drive in velocity mode via DAT8188 (digital); speed from a DAT8024, a dat8024 IOC PV, or a drive preset
 ├── TelnetDevice  (telnet_base.py — transport in telnet_socket.py)
 │   ├── instruments/ami136.py    — AMI Model 136 liquid-level monitor
 │   ├── instruments/cm4g_magnet.py — Cryomagnetics Model 4G magnet power supply
@@ -43,6 +45,8 @@ BaseDevice  (base_device.py)
 | `dat8018.py` | Datexel DAT8018 | Modbus TCP | `aIn` (thermocouple °C) |
 | `dat8024.py` | Datexel DAT8024 | Modbus TCP | `aOut` (0–5 V DAC) |
 | `dat8130.py` | Datexel DAT8130 | Modbus TCP | `boolOut` (relay), `boolIn` (DI) |
+| `dat8188.py` | Datexel DAT8188 | Modbus TCP | `boolOut` x8 (PNP out), `boolIn` x8 (DI) |
+| `dat8188_surestep.py` | SureStep STP-DRV-4850/80100 via DAT8188 (+ DAT8024, its IOC, or preset speed) | Modbus TCP (+ CA) | `aOut` (speed rev/s), `boolOut` x3 (run, direction, enable), `boolIn` (fault) or `aIn` (tach rev/s) |
 | `ami136.py` | AMI 136 | Telnet | `aIn` (level %) |
 | `cm4g_magnet.py` | Cryomagnetics 4G | Telnet | `aIn` V/I, `aOut` limits, `mbbOut` sweep |
 | `cs4_magnet.py` | Cryomagnetics CS-4 | Telnet | `aIn` V/I, `aOut` limits, `mbbOut` sweep |

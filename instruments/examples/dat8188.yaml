@@ -1,0 +1,33 @@
+# Example settings for instruments/dat8188.py
+# Datexel DAT8188 8 digital input / 8 PNP output module, Modbus TCP.
+#
+# PVs: one per channel, named exactly as listed.
+# Positions 1-8 are PNP outputs 0-7 (boolOut); positions 9-16 are digital inputs 0-7 (boolIn).
+# Use 'None' to skip a position; trailing positions may be left off.
+dat8188:
+  module: 'devices.instruments.dat8188'
+  autostart: True
+  ip: '192.0.2.25'
+  port: '502'
+  timeout: 2
+  delay: 2
+  channels:
+    - Pump_Enable       # output 0
+    - None              # output 1
+    - None              # output 2
+    - None              # output 3
+    - None              # output 4
+    - None              # output 5
+    - None              # output 6
+    - None              # output 7
+    - Pump_Fault        # input 0
+  records:
+    Pump_Enable:
+      DESC: 'Pump Enable'
+      ZNAM: 'Off'
+      ONAM: 'On'
+    Pump_Fault:
+      DESC: 'Pump Fault'
+      ZNAM: 'OK'
+      ONAM: 'Fault'
+      OSV: 'MAJOR'

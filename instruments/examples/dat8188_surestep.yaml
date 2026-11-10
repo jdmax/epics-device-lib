@@ -1,0 +1,61 @@
+# Example settings for instruments/dat8188_surestep.py
+# SureStep advanced microstepping drive (STP-DRV-4850 / STP-DRV-80100) in velocity (oscillator)
+# mode: digital lines from a Datexel DAT8188, speed from one of three sources (speed_source).
+#
+# Put the drive in velocity mode with SureMotion Pro first; the how-to and the wiring notes
+# (2200 ohm dropping resistors, fault output, analog ground) are in the driver's docstring.
+#
+# PVs: named exactly as listed. Positions have fixed roles; keep the order, rename freely,
+# use 'None' for one that is not wired:
+#   1st  speed  (aOut, rev/s)        -> drive AIN; read-only aIn of preset_rps in 'preset' mode
+#   2nd  run    (boolOut, Stop/Run)  DAT8188 output 0 -> drive STEP
+#   3rd  dir    (boolOut, CW/CCW)    DAT8188 output 1 -> drive DIR
+#   4th  enable (boolOut, Disabled/Enabled) DAT8188 output 2 -> drive EN (inverted, see below)
+#   5th  fault  (boolIn, OK/Fault)   DAT8188 input 0  <- drive OUT   (out_function 'fault')
+#        or measured speed (aIn, rev/s) from the drive's tach output (out_function 'tach')
+# Speed volts = speed / rps_per_volt, clamped to 0..max_volts.
+# Tach speed = DAT8188 input 0 frequency * freq_scale / tach_ppr; keep the pulse rate under 300 Hz.
+stepper:
+  module: 'devices.instruments.dat8188_surestep'
+  autostart: True
+  ip: '192.0.2.25'      # DAT8188
+  port: '502'
+  timeout: 2
+  delay: 2
+  speed_source: 'dac'   # 'dac' | 'pv' | 'preset' (default 'dac')
+  # 'dac': a DAT8024 output owned by this IOC. Don't also drive it from a dat8024 IOC.
+  dac_ip: '192.0.2.21'
+  dac_port: '502'       # (default '502')
+  dac_channel: 3        # DAT8024 output 0-3 wired to the drive's AIN (default 0)
+  # 'pv': an output PV, in volts, of a running dat8024 IOC, written over Channel Access.
+  #speed_pv: 'PREFIX:Stepper_VC'
+  # 'preset': no DAT8024; the drive's fixed speed from SureMotion Pro, shown on the speed PV.
+  #preset_rps: 2.0
+  rps_per_volt: 2.0     # rev/s per volt; drive's full-scale speed at 5 V / 5 (default 1.0)
+  max_volts: 5.0        # AIN upper limit (default 5.0)
+  enable_inverted: True # EN energized = motor off, per the manual (default True)
+  out_function: 'fault' # drive OUT wired to DAT8188 input 0: 'fault' | 'tach' (default 'fault')
+  # 'tach': rename the 5th channel (e.g. Stepper_Tach) and give it PREC/EGU 'rev/s' under records.
+  #tach_ppr: 10         # drive's tach pulses per motor rev (required for 'tach')
+  #freq_scale: 1.0      # Hz per DAT8188 frequency count (default 1.0)
+  channels:
+    - Stepper_Speed
+    - Stepper_Run
+    - Stepper_Dir
+    - Stepper_Enable
+    - Stepper_Fault
+  records:
+    Stepper_Speed:
+      DESC: 'Stepper Speed'
+      PREC: 3
+      EGU: 'rev/s'
+      DRVH: 10          # max_volts * rps_per_volt. Remove DRVH/DRVL in 'preset' mode:
+      DRVL: 0           #   the speed PV is then an aIn, which has no such fields
+    Stepper_Run:
+      DESC: 'Stepper Run/Stop'
+    Stepper_Dir:
+      DESC: 'Stepper Direction'
+    Stepper_Enable:
+      DESC: 'Stepper Drive Enable'
+    Stepper_Fault:
+      DESC: 'Stepper Drive Fault'
