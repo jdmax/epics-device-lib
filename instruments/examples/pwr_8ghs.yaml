@@ -1,0 +1,35 @@
+# Example settings for instruments/pwr_8ghs.py
+# Mini-Circuits PWR-8GHS-RC (PWR-SEN-8GHS-RC) CW power sensor, SCPI over Telnet (port 23).
+# Sensor is placed in low-noise mode on connect.
+#
+# PVs: {ch}       power reading (dBm; -99 means below useable range)
+#      {ch}_Freq  compensation frequency setpoint (MHz), applied on connect from 'freq'
+#      {ch}_Temp  internal sensor temperature (C, uncalibrated)
+# One channel only.
+pwr_8ghs:
+  module: 'devices.instruments.pwr_8ghs'
+  autostart: True
+  ip: '192.0.2.40'
+  port: '23'
+  timeout: 2
+  delay: 1
+  freq: 1000              # Compensation frequency in MHz (match the signal being measured)
+  # password: '123'       # Only if HTTP/Telnet password security is enabled on the sensor
+  channels:
+    - RF_PWR
+  records:
+    RF_PWR:
+      DESC: 'RF Power'
+      PREC: 2
+      EGU: 'dBm'
+      LOLO: -98           # -99 dBm reported when below sensor range
+    RF_PWR_Freq:
+      DESC: 'Compensation Frequency'
+      PREC: 1
+      EGU: 'MHz'
+      DRVL: 1
+      DRVH: 8000
+    RF_PWR_Temp:
+      DESC: 'Sensor Temperature'
+      PREC: 1
+      EGU: 'C'

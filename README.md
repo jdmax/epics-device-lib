@@ -27,6 +27,8 @@ BaseDevice  (base_device.py)
 │   ├── instruments/ls218.py     — Lakeshore Model 218 temperature monitor
 │   ├── instruments/ls336.py     — Lakeshore Model 336 temperature controller
 │   ├── instruments/mks937b.py   — MKS 937B vacuum gauge controller
+│   ├── instruments/pwr_8ghs.py  — Mini-Circuits PWR-8GHS-RC CW power sensor (SCPI, low-noise mode)
+│   ├── instruments/sr844.py     — SRS SR844 RF lock-in amplifier (X/Y/R/θ, sensitivity, time constant, unlock)
 │   ├── instruments/si9700.py    — Scientific Instruments SI-9700 temperature controller
 │   ├── instruments/tpg_26x.py  — Pfeiffer TPG 261/262 vacuum gauge
 │   └── instruments/vaunix_lms.py — Vaunix Lab Brick LMS/BLX synthesiser (via USB-to-TCP shim)
@@ -55,6 +57,8 @@ BaseDevice  (base_device.py)
 | `ls218.py` | Lakeshore 218 | Telnet (RS-232) | `aIn` (temperature K) |
 | `ls336.py` | Lakeshore 336 | Telnet (RS-232) | `aIn` T/heater, `aOut` SP/PID, `mbbOut` mode/range |
 | `mks937b.py` | MKS 937B | Telnet (RS-485) | `aIn` (pressure mbar) |
+| `pwr_8ghs.py` | Mini-Circuits PWR-8GHS-RC | Telnet (SCPI, native) | `aIn` power dBm / temp, `aOut` compensation freq MHz |
+| `sr844.py` | SRS SR844 lock-in | Telnet (RS-232) | `aIn` X/Y/R/θ/ref freq, `mbbOut` sens/TC, `boolIn` unlock/overload |
 | `si9700.py` | SI-9700 | Telnet (RS-232) | `aIn` T/heater, `aOut` SP, `mbbOut` mode |
 | `tpg_26x.py` | Pfeiffer TPG 261/262 | Telnet (RS-232) | `aIn` (pressure mbar) |
 | `vaunix_lms.py` | Vaunix Lab Brick LMS/BLX | TCP (USB shim) | `aIn` freq/power, `aOut` setpoints, `boolOut` RF/ref, `boolIn` PLL lock |

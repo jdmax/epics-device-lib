@@ -1,0 +1,44 @@
+# Example settings for instruments/sr844.py
+# SRS SR844 RF lock-in amplifier, RS-232 via serial-to-Ethernet adapter
+# (SR844 default 9600 baud, 8N1; settable to 19200 via Setup key).
+#
+# PVs: {ch}_X, {ch}_Y, {ch}_R (V), {ch}_Theta (deg), {ch}_Freq (Hz, measured reference)
+#      {ch}_Sens, {ch}_TC  sensitivity / time constant (mbbOut; no autorange is used)
+#      {ch}_Unlock, {ch}_Overload  latched status since last poll; X/Y/R/Theta/Freq go MAJOR when either is set
+# One channel only. Channel name is the PV prefix.
+sr844:
+  module: 'devices.instruments.sr844'
+  autostart: True
+  ip: '192.0.2.41'
+  port: '1001'               # serial adapter channel
+  timeout: 2
+  delay: 0.5
+  ref_impedance: '10k'       # optional: '50' or '10k'; also forces external reference
+  input_impedance: '50'      # optional: '50' or '1M'
+  slope: '12'               # optional: 'none', '6', '12', '18', '24' dB/oct
+  wide_reserve: 'low_noise' # optional: 'high', 'normal', 'low_noise'
+  close_reserve: 'low_noise' # optional: 'high', 'normal', 'low_noise'
+  # phase: 0.0              # optional: reference phase in degrees; pin it once calibrated
+  channels:
+    - LockIn
+  records:
+    LockIn_X:
+      DESC: 'Lock-in X'
+      PREC: 6
+      EGU: 'V'
+    LockIn_Y:
+      DESC: 'Lock-in Y'
+      PREC: 6
+      EGU: 'V'
+    LockIn_R:
+      DESC: 'Lock-in R'
+      PREC: 6
+      EGU: 'V'
+    LockIn_Theta:
+      DESC: 'Lock-in phase'
+      PREC: 2
+      EGU: 'deg'
+    LockIn_Freq:
+      DESC: 'Reference frequency'
+      PREC: 1
+      EGU: 'Hz'
