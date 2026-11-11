@@ -21,8 +21,7 @@ BaseDevice  (base_device.py)
 ├── TelnetDevice  (telnet_base.py — transport in telnet_socket.py)
 │   ├── instruments/ami136.py    — AMI Model 136 liquid-level monitor
 │   ├── instruments/bga244.py    — SRS BGA244 binary gas analyzer
-│   ├── instruments/cm4g_magnet.py — Cryomagnetics Model 4G magnet power supply
-│   ├── instruments/cs4_magnet.py  — Cryomagnetics CS-4 magnet power supply
+│   ├── instruments/cm4g_magnet.py — Cryomagnetics Model 4G / CS-4 magnet power supply
 │   ├── instruments/dp832.py     — Rigol DP832 programmable DC power supply
 │   ├── instruments/eip_counter.py — EIP 588C microwave frequency counter (via Prologix GPIB-Ethernet)
 │   ├── instruments/elva1_powmeter.py — ELVA-1 millimeter-wave power meter (untested)
@@ -65,8 +64,7 @@ Access with `aioca`. Other third-party dependencies are per driver: `alicat`
 | `dat8188_surestep.py` | SureStep STP-DRV-4850/80100 via DAT8188 (+ DAT8024, its IOC, or preset speed) | Modbus TCP (+ CA) | `aOut` (speed rev/s), `boolOut` x3 (run, direction, enable), `boolIn` (fault) or `aIn` (tach rev/s) |
 | `ami136.py` | AMI 136 | Telnet | `aIn` (level %) |
 | `bga244.py` | SRS BGA244 | Telnet (RS-232) | `aIn` x6 (gas ratios, temperatures, pressure, normalized speed of sound) |
-| `cm4g_magnet.py` | Cryomagnetics 4G | Telnet | `aIn` V/I, `aOut` limits, `mbbOut` sweep |
-| `cs4_magnet.py` | Cryomagnetics CS-4 | Telnet | `aIn` V/I, `aOut` limits, `mbbOut` sweep |
+| `cm4g_magnet.py` | Cryomagnetics 4G / CS-4 | Telnet | `aIn` V/I, `aOut` limits, `mbbOut` sweep |
 | `dp832.py` | Rigol DP832 | Telnet (LXI) | `aIn` V/I, `aOut` setpoints, `boolOut` output enable |
 | `eip_counter.py` | EIP 588C | Telnet (Prologix GPIB) | `aIn` (frequency GHz) |
 | `elva1_powmeter.py` | ELVA-1 power meter | Telnet (RS-232) | `aIn` (power mW) |

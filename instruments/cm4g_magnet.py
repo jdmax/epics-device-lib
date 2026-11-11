@@ -4,7 +4,11 @@ from ..telnet_base import TelnetDevice, TelnetConnection
 
 
 class Device(TelnetDevice):
-    """Cryomagnetics Model 4g power supply"""
+    """Cryomagnetics Model 4G / CS-4 superconducting magnet power supply.
+
+    The CS-4 uses the same remote command set as the Model 4G, so this driver
+    works for both models.
+    """
 
     def __init__(self, device_name, settings):
         self.sweep_choice = ['UP', 'DOWN', 'PAUSE', 'ZERO', 'UP FAST', 'DOWN FAST', 'ZERO FAST']
@@ -152,8 +156,8 @@ class DeviceConnection(TelnetConnection):
             i, match, data = self.tn.expect([self.any_regex], timeout=self.timeout)
             return str(match.groups()[0])
         except Exception as e:
-            print(f"4g set remote failed on {self.host}: {e}")
-            raise OSError('4g set')
+            print(f"Cryomagnetics set remote failed on {self.host}: {e}")
+            raise OSError('Cryomagnetics set remote')
 
     def read_ulim(self):
         """Read upper limit"""

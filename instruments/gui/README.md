@@ -48,7 +48,7 @@ passed to the new display, so set `CH` on the button or on its group.
 |---|---|---|
 | `pid.bob` | `pid`, `pid_controller` | `P`, `CH` |
 | `ls336.bob` | `ls336` (control loops) | `P`, `CH` |
-| `magnet.bob` | `cs4_magnet`, `cm4g_magnet` | `P`, `CH` |
+| `magnet.bob` | `cm4g_magnet` (4G and CS-4) | `P`, `CH` |
 | `hfc300.bob` | `hfc300` | `P`, `CH` |
 | `feedforward.bob` | `feedforward` (4 source rows) | `P`, `CH` |
 | `vaunix_lms.bob` | `vaunix_lms` | `P`, `CH` |
@@ -70,7 +70,7 @@ them or copy one to add more.
 | `si9700_compact.bob` | `si9700` | `CH`, `LABEL` | |
 | `alicat_compact.bob` | `alicat_flow` | `CH`, `LABEL` | |
 | `hfc300_compact.bob` | `hfc300` | `CH`, `LABEL` | `hfc300` |
-| `magnet_compact.bob` | `cs4_magnet`, `cm4g_magnet` | `CH`, `LABEL` | `magnet` |
+| `magnet_compact.bob` | `cm4g_magnet` (4G and CS-4) | `CH`, `LABEL` | `magnet` |
 | `dp832_channel.bob` | `dp832`: a header group plus one channel row; repeat the row per channel | `CH`, `LABEL` | |
 | `digital_out.bob` | `dat8130`, `dat8188` outputs, any boolOut | `CH`, `LABEL` | |
 | `digital_in.bob` | `dat8130`, `dat8188` inputs, any boolIn | `CH`, `LABEL` | |

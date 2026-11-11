@@ -1,5 +1,6 @@
 # Example settings for instruments/cm4g_magnet.py
-# Cryomagnetics Model 4G superconducting magnet power supply, via serial-to-Ethernet adapter.
+# Cryomagnetics Model 4G or CS-4 superconducting magnet power supply (same command set,
+# one driver for both), via serial-to-Ethernet adapter.
 # The driver puts the supply in remote mode on connect.
 #
 # PVs per channel: {ch}_VI lead voltage, {ch}_Coil_CI coil current, {ch}_Lead_CI lead current,
