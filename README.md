@@ -3,7 +3,7 @@
 Reusable EPICS soft-IOC device drivers for laboratory instrumentation, built on
 [python-softioc](https://github.com/dls-controls/pythonSoftIOC). Intended to be
 consumed as a **git submodule** (mounted at `devices/`) inside a deployment repo
-that runs [softioc_toolkit](https://github.com/YOUR_ORG/softioc_toolkit).
+that runs [softioc_toolkit](https://github.com/jdmax/softioc_toolkit).
 
 ## Inheritance hierarchy
 
